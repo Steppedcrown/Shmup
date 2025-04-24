@@ -1,9 +1,3 @@
-**Build A Path**
-
-A template project to be used when creating a program which will allow the creation
-of a Phaser path by making a series of mouse clicks.
-
-Look for TODO items in src/Scenes/Path.js and complete these. There is pseudocode in comments
-next to these TODO items.
+CMPM 120 Shoot-em-up game
 
 Uses Kenny Assets "[Space Shooter Redux](https://kenney.nl/assets/space-shooter-redux)" set, with gratitude.
