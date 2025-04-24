@@ -19,5 +19,5 @@
 	<SubTexture name="shipYellow.png" x="0" y="232" width="124" height="62"/>
 	<SubTexture name="shipYellow_damage1.png" x="0" y="170" width="124" height="62"/>
 	<SubTexture name="shipYellow_damage2.png" x="0" y="108" width="124" height="62"/>
-	<SubTexture name="shipYellow_manned.png" x="0" y="0" width="124" height="108"/>
+	<SubTexture name="shipYellow_manned.png" x="0" y="0" width="123" height="108"/>
 </TextureAtlas>
