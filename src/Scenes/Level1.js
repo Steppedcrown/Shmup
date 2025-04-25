@@ -14,9 +14,10 @@ export class Level1 extends BaseLevel {
   // Create the character and set up input and sounds
   create() {
     // Add player ship sprite to the screen
-    this.character = this.add.sprite(400, 800, "ships", "shipYellow_manned.png");
-    this.character.setScale(0.75);
-    this.character.setDepth(0);
+    this.character = this.createPlayer();
+
+    // Create an enemy ship
+    this.enemy = this.createBasicEnemy(this.game.config.width / 2, this.game.config.height / 2);
 
     // Setup keyboard controls and sound effects
     this.createInput();
@@ -25,12 +26,12 @@ export class Level1 extends BaseLevel {
 
   update(time, delta) {
     // Check for left/right movement
-    let velocity = 0;
-    if (this.aKey.isDown) velocity = -10;
-    if (this.dKey.isDown) velocity = 10;
+    let moveDir = 0;
+    if (this.aKey.isDown) moveDir = -1;
+    if (this.dKey.isDown) moveDir = 1;
 
     // Move the player and update lasers
-    this.movePlayer(velocity);
-    this.moveProjectiles();
+    this.movePlayer(moveDir);
+    this.movePlayerProjectiles();
   }
 }

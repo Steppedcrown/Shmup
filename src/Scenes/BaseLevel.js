@@ -8,8 +8,12 @@ export class BaseLevel extends Phaser.Scene {
       this.dKey = null;
       this.spaceKey = null;
   
+      // Game feel variables
+      this.playerSpeed = 10;
+      this.playerProjectileSpeed = 18;
+
       // Array to keep track of active projectiles
-      this.projectiles = [];
+      this.playerProjectiles = [];
     }
   
     // Preload all shared assets
@@ -44,6 +48,22 @@ export class BaseLevel extends Phaser.Scene {
       this.playerMovementSFX = this.sound.add("playerMovement");
       this.shipExplosionSFX = this.sound.add("shipExplosion");
     }
+
+    // Create player ship sprite
+    createPlayer() {
+      const player = this.add.sprite(this.game.config.width / 2, this.game.config.height - 100, "ships", "shipYellow_manned.png");
+      player.setScale(0.75);
+      player.setDepth(0);
+      return player;
+    }
+
+    // Create an enemy sprite
+    createBasicEnemy(x, y) {
+      const enemy = this.add.sprite(x, y, "ships", "shipGreen_manned.png");
+      enemy.setScale(0.75);
+      enemy.setDepth(0);
+      return enemy;
+    }
   
     // Fire a new laser from the character’s position
     shootLaser() {
@@ -51,7 +71,7 @@ export class BaseLevel extends Phaser.Scene {
       proj.setScale(0.3);
       proj.setOrigin(0.5, 1);
       proj.setDepth(-1);
-      this.projectiles.push(proj);
+      this.playerProjectiles.push(proj);
   
       // Play firing sound
       this.playerLaserSFX.play({
@@ -61,15 +81,15 @@ export class BaseLevel extends Phaser.Scene {
     }
   
     // Move the player left or right based on velocity
-    movePlayer(velocity) {
-      this.character.x += velocity;
+    movePlayer(moveDir) {
+      this.character.x += this.playerSpeed * moveDir;
   
       // Keep character inside screen bounds
       if (this.character.x < 0) this.character.x = 0;
       if (this.character.x > this.game.config.width) this.character.x = this.game.config.width;
   
       // Play/stop engine sound when moving
-      if (velocity !== 0) {
+      if (moveDir !== 0) {
         if (!this.playerMovementSFX.isPlaying) {
           this.playerMovementSFX.play({ volume: 0.2, loop: true });
         }
@@ -81,15 +101,15 @@ export class BaseLevel extends Phaser.Scene {
     }
   
     // Move each projectile upward and remove it when it goes off screen
-    moveProjectiles() {
-      for (let i = 0; i < this.projectiles.length; i++) {
-        let projectile = this.projectiles[i];
-        projectile.y -= 18;
+    movePlayerProjectiles() {
+      for (let i = 0; i < this.playerProjectiles.length; i++) {
+        let projectile = this.playerProjectiles[i];
+        projectile.y -= this.playerProjectileSpeed;
   
         // Remove projectile if off screen
         if (projectile.y < 0) {
           projectile.destroy();
-          this.projectiles.splice(i, 1);
+          this.playerProjectiles.splice(i, 1);
           i--;
         }
       }
