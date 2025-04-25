@@ -17,7 +17,12 @@ export class Level1 extends BaseLevel {
     this.character = this.createPlayer();
 
     // Create an enemy ship
-    this.enemy = this.createBasicEnemy(this.game.config.width / 2, this.game.config.height / 2);
+    this.curve = new Phaser.Curves.Spline([
+      20, 20,
+      80, 400,
+      300, 750
+    ]);
+    this.enemy00 = this.createBasicEnemy(this.curve, 5000);
 
     // Setup keyboard controls and sound effects
     this.createInput();

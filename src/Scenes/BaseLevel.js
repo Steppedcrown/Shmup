@@ -58,10 +58,19 @@ export class BaseLevel extends Phaser.Scene {
     }
 
     // Create an enemy sprite
-    createBasicEnemy(x, y) {
-      const enemy = this.add.sprite(x, y, "ships", "shipGreen_manned.png");
+    createBasicEnemy(curve, delay=0) {
+      const enemy = this.add.follower(curve, 50, 50, "ships", "shipGreen_manned.png");
       enemy.setScale(0.75);
       enemy.setDepth(0);
+      enemy.startFollow({
+        from: 0,
+        to: 1,
+        delay: delay,
+        duration: 2500,
+        ease: 'Sine.easeInOut',
+        repeat: 0,
+        rotationOffset: -90
+      });
       return enemy;
     }
   
