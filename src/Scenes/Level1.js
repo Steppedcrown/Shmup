@@ -20,13 +20,13 @@ export class Level1 extends BaseLevel {
     // Add player ship sprite to the screen
     this.character = this.createPlayer();
 
+    // Store enemies in an array
+    this.enemies = [];
+
     // Create an enemy ship
-    this.curve = new Phaser.Curves.Spline([
-      20, 20,
-      80, 400,
-      300, 750
-    ]);
-    this.enemy00 = this.createBasicEnemy(this.curve, 5000);
+    const curve1 = new Phaser.Curves.Spline([20, 20, 80, 400, 300, 750]);
+    const enemy1 = this.createBasicEnemy(curve1, 3000, 1500, true);
+    this.enemies.push(enemy1);
 
     // Setup keyboard controls and sound effects
     this.createInput();

@@ -58,20 +58,26 @@ export class BaseLevel extends Phaser.Scene {
     }
 
     // Create an enemy sprite
-    createBasicEnemy(curve, delay=0) {
-      const enemy = this.add.follower(curve, curve.points[0].x, curve.points[0].y, "ships", "shipGreen_manned.png");
+    createEnemy(curve, delay = 0, spriteFrame = "shipGreen_manned.png", duration = 2500, yoyo = false, repeat = -1) {
+      const enemy = this.add.follower(curve, curve.points[0].x, curve.points[0].y, "ships", spriteFrame);
       enemy.setScale(0.75);
       enemy.setDepth(0);
       enemy.startFollow({
         from: 0,
         to: 1,
         delay: delay,
-        duration: 2500,
+        duration: duration,
         ease: 'Sine.easeInOut',
-        repeat: 0,
+        repeat: repeat,
+        yoyo: yoyo,
+        rotateToPath: false,
         rotationOffset: -90
       });
       return enemy;
+    }
+
+    createBasicEnemy(curve, delay = 0, duration = 2500, yoyo = false, repeat = -1) {
+      this.createEnemy(curve, delay, "shipGreen_manned.png", duration, yoyo, repeat);
     }
   
     // Fire a new laser from the character’s position
