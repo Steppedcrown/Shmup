@@ -36,10 +36,10 @@ export class BaseLevel extends Phaser.Scene {
       this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
       this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
   
-      // Fire laser when SPACE is pressed
+      /* Fire laser when SPACE is pressed
       this.input.keyboard.on("keydown-SPACE", () => {
         this.shootLaser();
-      });
+      }); */
     }
   
     // Create sound objects from preloaded audio
@@ -59,7 +59,7 @@ export class BaseLevel extends Phaser.Scene {
 
     // Create an enemy sprite
     createBasicEnemy(curve, delay=0) {
-      const enemy = this.add.follower(curve, 50, 50, "ships", "shipGreen_manned.png");
+      const enemy = this.add.follower(curve, curve.points[0].x, curve.points[0].y, "ships", "shipGreen_manned.png");
       enemy.setScale(0.75);
       enemy.setDepth(0);
       enemy.startFollow({

@@ -4,6 +4,10 @@ import { BaseLevel } from "./BaseLevel.js";
 export class Level1 extends BaseLevel {
   constructor() {
     super("level1"); // Pass scene key to parent class
+
+    // Scene-specific variables
+    this.playerLaserCooldown = 1;
+    this.playerLaserCooldownTimer = 0;
   }
 
   // Preload all necessary assets (uses BaseLevel’s method)
@@ -34,6 +38,16 @@ export class Level1 extends BaseLevel {
     let moveDir = 0;
     if (this.aKey.isDown) moveDir = -1;
     if (this.dKey.isDown) moveDir = 1;
+
+    // Check for shooting
+    this.playerLaserCooldownTimer -= delta / 1000;
+    if (this.spaceKey.isDown) {
+      // If the cooldown timer is at 0, shoot a laser
+      if (this.playerLaserCooldownTimer <= 0) {
+        this.shootLaser();
+        this.playerLaserCooldownTimer = this.playerLaserCooldown;
+      }
+    }
 
     // Move the player and update lasers
     this.movePlayer(moveDir);
