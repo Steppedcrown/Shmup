@@ -3,6 +3,7 @@ class Laser extends Phaser.GameObjects.Sprite {
       super(scene, x, y, texture, frame);
       this.visible = false;
       this.active = false;
+      this.wave = scene.wave;
 
       this.setScale(0.3);
       this.setDepth(-1);
@@ -17,17 +18,20 @@ class Laser extends Phaser.GameObjects.Sprite {
               this.makeInactive();
           }
 
-          // Check for collision with enemies
-          for (let enemy of this.scene.enemies.getChildren()) {
+        // Check for collision with enemies
+          for (let waveGroup of this.scene.waves) {
+            for (let enemy of waveGroup.getChildren()) {
               if (this.scene.collides(this, enemy)) {
-                  this.makeInactive();
-                  enemy.hp--;
-                  if (enemy.hp <= 0) {
-                    enemy.destroy();
-                  }
-                  break;
+                this.makeInactive();
+                enemy.hp -= this.scene.playerDamage;
+                if (enemy.hp <= 0) {
+                  enemy.destroy();
+                }
+                return;
               }
+            }
           }
+          
       }
   }
 

@@ -14,10 +14,16 @@ export class BaseLevel extends Phaser.Scene {
         // Array to keep track of active projectiles
         this.playerProjectiles = [];
 
-        // Level variables
+        // Player variables
         this.playerLaserCooldown = 0.4;
         this.playerLaserCooldownTimer = 0;
         this.playerScore = 0;
+        this.playerDamage = 1;
+
+        // Wave variables
+        this.wave = 0;
+        this.totalWaves = 0;
+        this.waves = [];
 
         // Enemy paths
         const basicPath1 = new Phaser.Curves.Spline([
@@ -37,6 +43,22 @@ export class BaseLevel extends Phaser.Scene {
         this.basicPaths = [basicPath1, basicPath2];
     }
 
+    preloadAssets() {
+        this.load.setPath("./assets/");
+  
+        // Spritesheets
+        this.load.atlasXML("ships", "sprites/spritesheet_spaceships.png", "sprites/spritesheet_spaceships.xml");
+        this.load.atlasXML("lasers", "sprites/spritesheet_lasers.png", "sprites/spritesheet_lasers.xml");
+    
+        // Sound effects
+        this.load.audio("playerLaser", "audio/laserRetro_000.ogg");
+        this.load.audio("playerMovement", "audio/spaceEngine_003.ogg");
+        this.load.audio("shipExplosion", "audio/explosionCrunch_001.ogg");
+
+        // Font
+        this.load.bitmapFont('myFont', 'fonts/myFont.png', 'fonts/myFont.xml');
+    }
+
     setupInputs() {
         // Setup keyboard controls
         this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -49,6 +71,11 @@ export class BaseLevel extends Phaser.Scene {
         this.playerLaserSFX = this.sound.add("playerLaser");
         this.playerMovementSFX = this.sound.add("playerMovement");
         this.shipExplosionSFX = this.sound.add("shipExplosion");
+    }
+
+    setupText() {
+        // Add score text
+        this.displayScore = this.add.bitmapText(850, 25, 'myFont', 'Score: ' + this.playerScore, 32);
     }
 
     // Collision detection for rectangles
@@ -66,7 +93,7 @@ export class BaseLevel extends Phaser.Scene {
         return true; // Objects are colliding
     }
 
-    // Create enemy
+    // Create enemy on random path based on type
     createEnemy(type, texture, frame, speed = 0.2, maxHP, points, destroySFX) {
         let path = null;
         switch (type) {
@@ -78,7 +105,7 @@ export class BaseLevel extends Phaser.Scene {
                 return;
         }
         const enemy = new Enemy(this, path, texture, frame, speed, maxHP, points, destroySFX);
-        this.enemies.add(enemy);
+        this.waves[this.wave].add(enemy);
     }
   }
   

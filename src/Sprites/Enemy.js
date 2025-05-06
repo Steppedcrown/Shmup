@@ -34,7 +34,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
     destroy() {
         // Remove the enemy from the scene
-        this.scene.enemies.remove(this);
+        this.scene.waves[this.scene.wave].remove(this);
         super.destroy();
         
         // Update score
