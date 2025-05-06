@@ -1,4 +1,3 @@
-// Level1 scene that extends shared logic from BaseLevel
 class Level1 extends Phaser.Scene {
   constructor() {
     super("level1"); // Pass scene key to parent class
@@ -16,12 +15,12 @@ class Level1 extends Phaser.Scene {
     this.playerProjectiles = [];
 
     // Scene-specific variables
-    this.playerLaserCooldown = 1;
+    this.playerLaserCooldown = 0.4;
     this.playerLaserCooldownTimer = 0;
 
   }
 
-  // Preload all necessary assets (uses BaseLevel’s method)
+  // Preload all necessary assets
   preload() {
     this.load.setPath("./assets/");
   
@@ -47,12 +46,15 @@ class Level1 extends Phaser.Scene {
     this.shipExplosionSFX = this.sound.add("shipExplosion");
 
     // Add player ship sprite to the screen
-    console.log(this.game.config.width, this.game.config.height);
-    this.character = new Player(this, this.game.config.width, this.game.config.height, "ships", "shipGreen_manned.png", this.aKey, this.dKey, this.playerSpeed, this.playerMovementSFX);
+    this.player = new Player(this, this.game.config.width / 2, this.game.config.height - 100, "ships", "shipGreen_manned.png", 
+                            this.aKey, this.dKey, this.playerSpeed, this.playerMovementSFX, this.playerLaserSFX);
   }
 
   update(time, delta) {
+    // Laser cooldown timer
+    this.playerLaserCooldownTimer -= delta / 1000;
+
     // Update the player ship
-    this.character.update();
+    this.player.update();
   }
 }
