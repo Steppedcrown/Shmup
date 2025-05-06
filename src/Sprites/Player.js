@@ -29,6 +29,7 @@ class Player extends Phaser.GameObjects.Sprite {
             frame: "laserYellow1.png",
             active: false,
             visible: false,
+            setXY: { x: -100, y: -100 },  // hides inactive lasers
             repeat: this.laserGroup.maxSize - 1
         });
 

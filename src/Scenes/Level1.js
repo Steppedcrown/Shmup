@@ -48,6 +48,20 @@ class Level1 extends Phaser.Scene {
     // Add player ship sprite to the screen
     this.player = new Player(this, this.game.config.width / 2, this.game.config.height - 100, "ships", "shipGreen_manned.png", 
                             this.aKey, this.dKey, this.playerSpeed, this.playerMovementSFX, this.playerLaserSFX);
+
+    // Enemy path
+    this.splinePath = new Phaser.Curves.Spline([
+      new Phaser.Math.Vector2(100, -50), 
+      new Phaser.Math.Vector2(150, 100),
+      new Phaser.Math.Vector2(300, 200),
+      new Phaser.Math.Vector2(400, 300),
+      new Phaser.Math.Vector2(500, 1000)
+    ]);
+
+    this.enemies = this.add.group({ runChildUpdate: true });
+
+    const enemy = new Enemy(this, this.splinePath, "ships", "shipYellow_manned.png", 0.25);
+    this.enemies.add(enemy);
   }
 
   update(time, delta) {
