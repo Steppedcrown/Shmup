@@ -11,7 +11,7 @@
 	<SubTexture name="shipGreen.png" x="123" y="403" width="124" height="68"/>
 	<SubTexture name="shipGreen_damage1.png" x="124" y="335" width="124" height="68"/>
 	<SubTexture name="shipGreen_damage2.png" x="124" y="267" width="124" height="68"/>
-	<SubTexture name="shipGreen_manned.png" x="123" y="144" width="124" height="123"/>
+	<SubTexture name="shipGreen_manned.png" x="124" y="144" width="124" height="123"/>
 	<SubTexture name="shipPink.png" x="124" y="72" width="124" height="72"/>
 	<SubTexture name="shipPink_damage.png" x="124" y="0" width="124" height="72"/>
 	<SubTexture name="shipPink_damage1.png" x="0" y="421" width="124" height="72"/>

@@ -12,10 +12,6 @@
 // debug with extreme prejudice
 "use strict"
 
-// Import scenes
-import { Level1 } from "./Scenes/Level1.js";
-import { BaseLevel } from "./Scenes/BaseLevel.js";
-
 // game config
 let config = {
     parent: 'phaser-game',
@@ -26,7 +22,7 @@ let config = {
     width: 1000,
     height: 900,
     scene: [Level1],
-    fps: { forceSetTimeOut: true, target: 30 }
+    fps: { forceSetTimeOut: true, target: 60 }
 }
 
 // Global variable to hold sprites
