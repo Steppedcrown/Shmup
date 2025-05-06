@@ -17,6 +17,7 @@ class Level1 extends Phaser.Scene {
     // Scene-specific variables
     this.playerLaserCooldown = 0.4;
     this.playerLaserCooldownTimer = 0;
+    this.playerScore = 0;
 
   }
 
@@ -32,6 +33,9 @@ class Level1 extends Phaser.Scene {
     this.load.audio("playerLaser", "audio/laserRetro_000.ogg");
     this.load.audio("playerMovement", "audio/spaceEngine_003.ogg");
     this.load.audio("shipExplosion", "audio/explosionCrunch_001.ogg");
+
+    // Font
+    this.load.bitmapFont('myFont', 'fonts/myFont.png', 'fonts/myFont.xml');
   }
 
   create() {
@@ -44,6 +48,9 @@ class Level1 extends Phaser.Scene {
     this.playerLaserSFX = this.sound.add("playerLaser");
     this.playerMovementSFX = this.sound.add("playerMovement");
     this.shipExplosionSFX = this.sound.add("shipExplosion");
+
+    // Add score text
+    this.displayScore = this.add.bitmapText(850, 25, 'myFont', 'Score: ' + this.playerScore, 32);
 
     // Add player ship sprite to the screen
     this.player = new Player(this, this.game.config.width / 2, this.game.config.height - 100, "ships", "shipGreen_manned.png", 
@@ -60,7 +67,7 @@ class Level1 extends Phaser.Scene {
 
     this.enemies = this.add.group({ runChildUpdate: true });
 
-    const enemy = new Enemy(this, this.splinePath, "ships", "shipYellow_manned.png", 0.25, 2, this.shipExplosionSFX);
+    const enemy = new Enemy(this, this.splinePath, "ships", "shipYellow_manned.png", 0.25, 2, 100, this.shipExplosionSFX);
     this.enemies.add(enemy);
   }
 

@@ -1,5 +1,5 @@
 class Enemy extends Phaser.GameObjects.Sprite {
-    constructor(scene, path, texture, frame, speed = 0.2, maxHP, destorySFX) {
+    constructor(scene, path, texture, frame, speed = 0.2, maxHP, points, destorySFX) {
         // Start at the beginning of the path
         super(scene, path.getStartPoint().x, path.getStartPoint().y, texture, frame);
 
@@ -10,6 +10,9 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.destroySFX = destorySFX;
         this.hp = maxHP;
         this.maxHP = maxHP;
+        this.points = points;
+        this.displayScore = scene.displayScore;
+        this.playerScore = scene.playerScore;
 
         this.setScale(0.7);
         this.setDepth(1);
@@ -33,6 +36,10 @@ class Enemy extends Phaser.GameObjects.Sprite {
         // Remove the enemy from the scene
         this.scene.enemies.remove(this);
         super.destroy();
+        
+        // Update score
+        this.playerScore += this.points;
+        this.displayScore.setText('Score: ' + this.playerScore);
 
         // Play the destroy sound effect
         if (this.destroySFX) {
