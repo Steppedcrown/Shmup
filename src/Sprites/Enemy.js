@@ -1,12 +1,15 @@
 class Enemy extends Phaser.GameObjects.Sprite {
-    constructor(scene, path, texture, frame, speed = 0.2) {
+    constructor(scene, path, texture, frame, speed = 0.2, maxHP, destorySFX) {
         // Start at the beginning of the path
         super(scene, path.getStartPoint().x, path.getStartPoint().y, texture, frame);
 
         this.scene = scene;
-        this.path = path;               // Phaser.Curves.Spline path
-        this.pathProgress = 0;          // Between 0 and 1
-        this.speed = speed;             // Adjust for difficulty/different enemies
+        this.path = path;               
+        this.pathProgress = 0;         
+        this.speed = speed;        
+        this.destroySFX = destorySFX;
+        this.hp = maxHP;
+        this.maxHP = maxHP;
 
         this.setScale(0.7);
         this.setDepth(1);
@@ -24,5 +27,16 @@ class Enemy extends Phaser.GameObjects.Sprite {
         // Get the current point along the spline
         const point = this.path.getPoint(this.pathProgress);
         this.setPosition(point.x, point.y);
+    }
+
+    destroy() {
+        // Remove the enemy from the scene
+        this.scene.enemies.remove(this);
+        super.destroy();
+
+        // Play the destroy sound effect
+        if (this.destroySFX) {
+            this.destroySFX.play({ volume: 0.5 });
+        }
     }
 }

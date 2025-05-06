@@ -60,7 +60,7 @@ class Level1 extends Phaser.Scene {
 
     this.enemies = this.add.group({ runChildUpdate: true });
 
-    const enemy = new Enemy(this, this.splinePath, "ships", "shipYellow_manned.png", 0.25);
+    const enemy = new Enemy(this, this.splinePath, "ships", "shipYellow_manned.png", 0.25, 2, this.shipExplosionSFX);
     this.enemies.add(enemy);
   }
 
@@ -70,5 +70,20 @@ class Level1 extends Phaser.Scene {
 
     // Update the player ship
     this.player.update();
+  }
+
+  // Collision detection for rectangles
+  collides(a, b) {
+    // Check for overlap on the X-axis
+    if (Math.abs(a.x - b.x) > (a.width / 2 + b.width / 2)) {
+      return false; // No overlap on the X-axis
+    }
+
+    // Check for overlap on the Y-axis
+    if (Math.abs(a.y - b.y) > (a.height / 2 + b.height / 2)) {
+      return false; // No overlap on the Y-axis
+    }
+
+    return true; // Objects are colliding
   }
 }

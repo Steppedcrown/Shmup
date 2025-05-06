@@ -16,6 +16,18 @@ class Laser extends Phaser.GameObjects.Sprite {
           if (this.y < 0) {
               this.makeInactive();
           }
+
+          // Check for collision with enemies
+          for (let enemy of this.scene.enemies.getChildren()) {
+              if (this.scene.collides(this, enemy)) {
+                  this.makeInactive();
+                  enemy.hp--;
+                  if (enemy.hp <= 0) {
+                    enemy.destroy();
+                  }
+                  break;
+              }
+          }
       }
   }
 
