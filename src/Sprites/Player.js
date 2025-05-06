@@ -15,13 +15,14 @@ class Player extends Phaser.GameObjects.Sprite {
         this.setScale(0.8);
         this.setDepth(0);
 
-        // Laser group
+        // Create laser group
         this.laserGroup = scene.add.group({
             active: true,
             runChildUpdate: true,
             maxSize: 5
         });
 
+        // Add lasers to the group
         this.laserGroup.createMultiple({
             classType: Laser,
             key: "lasers",
@@ -62,15 +63,14 @@ class Player extends Phaser.GameObjects.Sprite {
             }
         }
 
-        // Fire laser
+        // Fire laser if space key is pressed and cooldown timer is up
         if (this.scene.spaceKey.isDown && this.scene.playerLaserCooldownTimer <= 0) {
-            this.scene.playerLaserCooldownTimer = this.scene.playerLaserCooldown;
-            let laser = this.laserGroup.getFirstDead();
-            if (laser != null) {
-                this.scene.playerLaserCooldownTimer = this.scene.playerLaserCooldown;
-                laser.makeActive();
-                laser.x = this.x;
-                laser.y = this.y - (this.displayHeight/2);
+            let laser = this.laserGroup.getFirstDead(); // Get a dead laser from the group
+            if (laser) { // If there is a dead laser available
+                this.scene.playerLaserCooldownTimer = this.scene.playerLaserCooldown; // Reset cooldown timer
+                laser.makeActive(); // Activate the laser
+                laser.x = this.x; // Set laser position to player position
+                laser.y = this.y - (this.displayHeight/2); // Set laser position to just above the player
 
                 // Play firing sound
                 this.playerLaserSFX.play({

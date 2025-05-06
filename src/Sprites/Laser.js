@@ -29,18 +29,3 @@ class Laser extends Phaser.GameObjects.Sprite {
       this.active = false;
   }
 }
-
-    /* Fire a new laser from the character’s position
-    shootLaser() {
-        const proj = this.add.sprite(this.character.x, this.character.y, "lasers", "laserYellow1.png");
-        proj.setScale(0.3);
-        proj.setOrigin(0.5, 1);
-        proj.setDepth(-1);
-        this.playerProjectiles.push(proj);
-    
-        // Play firing sound
-        this.playerLaserSFX.play({
-          volume: 0.25,
-          detune: Phaser.Math.Between(-200, 200)
-        });
-    }*/
