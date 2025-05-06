@@ -18,6 +18,23 @@ export class BaseLevel extends Phaser.Scene {
         this.playerLaserCooldown = 0.4;
         this.playerLaserCooldownTimer = 0;
         this.playerScore = 0;
+
+        // Enemy paths
+        const basicPath1 = new Phaser.Curves.Spline([
+            new Phaser.Math.Vector2(100, -50), 
+            new Phaser.Math.Vector2(150, 100),
+            new Phaser.Math.Vector2(300, 200),
+            new Phaser.Math.Vector2(400, 300),
+            new Phaser.Math.Vector2(500, 1000)
+        ]);
+        const basicPath2 = new Phaser.Curves.Spline([
+            new Phaser.Math.Vector2(100, -50), 
+            new Phaser.Math.Vector2(200, 100),
+            new Phaser.Math.Vector2(400, 200),
+            new Phaser.Math.Vector2(800, 400),
+            new Phaser.Math.Vector2(1000, 1000)
+        ]);
+        this.basicPaths = [basicPath1, basicPath2];
     }
 
     setupInputs() {
@@ -47,6 +64,21 @@ export class BaseLevel extends Phaser.Scene {
         }
 
         return true; // Objects are colliding
+    }
+
+    // Create enemy
+    createEnemy(type, texture, frame, speed = 0.2, maxHP, points, destroySFX) {
+        let path = null;
+        switch (type) {
+            case "basic":
+                path = Phaser.Utils.Array.GetRandom(this.basicPaths);
+                break;
+            default:
+                console.error("Unknown enemy type: " + type);
+                return;
+        }
+        const enemy = new Enemy(this, path, texture, frame, speed, maxHP, points, destroySFX);
+        this.enemies.add(enemy);
     }
   }
   
