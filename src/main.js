@@ -12,6 +12,8 @@
 // debug with extreme prejudice
 "use strict"
 
+import { Level1 } from "./Scenes/Level1.js";
+
 // game config
 let config = {
     parent: 'phaser-game',

@@ -1,24 +1,8 @@
-class Level1 extends Phaser.Scene {
+import { BaseLevel } from "./BaseLevel.js";
+
+export class Level1 extends BaseLevel {
   constructor() {
     super("level1"); // Pass scene key to parent class
-
-    // Keys for input
-    this.aKey = null;
-    this.dKey = null;
-    this.spaceKey = null;
-
-    // Game feel variables
-    this.playerSpeed = 10;
-    this.playerProjectileSpeed = 18;
-
-    // Array to keep track of active projectiles
-    this.playerProjectiles = [];
-
-    // Scene-specific variables
-    this.playerLaserCooldown = 0.4;
-    this.playerLaserCooldownTimer = 0;
-    this.playerScore = 0;
-
   }
 
   // Preload all necessary assets
@@ -40,14 +24,10 @@ class Level1 extends Phaser.Scene {
 
   create() {
     // Setup keyboard controls
-    this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-    this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-    this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.setupInputs();
 
     // Setup sounds
-    this.playerLaserSFX = this.sound.add("playerLaser");
-    this.playerMovementSFX = this.sound.add("playerMovement");
-    this.shipExplosionSFX = this.sound.add("shipExplosion");
+    this.setupSounds();
 
     // Add score text
     this.displayScore = this.add.bitmapText(850, 25, 'myFont', 'Score: ' + this.playerScore, 32);
@@ -77,20 +57,5 @@ class Level1 extends Phaser.Scene {
 
     // Update the player ship
     this.player.update();
-  }
-
-  // Collision detection for rectangles
-  collides(a, b) {
-    // Check for overlap on the X-axis
-    if (Math.abs(a.x - b.x) > (a.width / 2 + b.width / 2)) {
-      return false; // No overlap on the X-axis
-    }
-
-    // Check for overlap on the Y-axis
-    if (Math.abs(a.y - b.y) > (a.height / 2 + b.height / 2)) {
-      return false; // No overlap on the Y-axis
-    }
-
-    return true; // Objects are colliding
   }
 }
