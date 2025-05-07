@@ -49,5 +49,8 @@ export class Level1 extends BaseLevel {
 
     // Update the player ship
     this.player.update();
+
+    // Move background
+    this.moveBackground();
   }
 }

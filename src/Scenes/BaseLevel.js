@@ -60,12 +60,18 @@ export class BaseLevel extends Phaser.Scene {
         // Background music
         this.load.audio("bgMusic", "audio/brain-implant-cyberpunk-sci-fi-trailer-action-intro-330416.mp3");
 
+        // Background image
+        this.load.image("starfield1", "backgrounds/starfield1.png");
+        this.load.image("starfield2", "backgrounds/starfield2.png");
+
         // Font
         this.load.bitmapFont('myFont', 'fonts/myFont.png', 'fonts/myFont.xml');
     }
 
     init() {
-        // Scene variables
+        // Add background
+        this.starfield1 = this.add.image(0, 0, "starfield1").setOrigin(0, 0).setScale(1).setDepth(-100);
+        this.starfield2 = this.add.image(0, 900, "starfield2").setOrigin(0, 0).setScale(1).setDepth(-100);
 
         // Player variables
         this.playerProjectiles = [];
@@ -141,6 +147,21 @@ export class BaseLevel extends Phaser.Scene {
     setupHealthText() {
         // Add health text
         this.displayHealth = this.add.bitmapText(50, 850, 'myFont', 'Hp: ' + this.playerHp, 32);
+    }
+
+    moveBackground() {
+        // Move the background images to create a parallax effect
+        let bgSpeed = 5;
+        this.starfield1.y += bgSpeed;
+        this.starfield2.y += bgSpeed;
+    
+        // Reset the background images when they go off-screen
+        if (this.starfield1.y > this.game.config.height) {
+            this.starfield1.y = this.starfield2.y - this.starfield2.displayHeight;
+        }
+        if (this.starfield2.y > this.game.config.height) {
+            this.starfield2.y = this.starfield1.y - this.starfield1.displayHeight;
+        }
     }
 
     // Collision detection for rectangles
