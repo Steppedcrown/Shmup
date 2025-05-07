@@ -20,6 +20,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
         this.setScale(0.7);
         this.setDepth(1);
+        this.setOrigin(0.5, 0.5);
 
         scene.add.existing(this);
     }

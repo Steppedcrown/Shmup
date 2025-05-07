@@ -18,8 +18,9 @@ export class Level1 extends BaseLevel {
     // Setup sounds
     this.setupSounds();
 
-    // Add score text
-    this.setupText();
+    // Add text
+    this.setupScoreText();
+    this.setupHealthText();
 
     // Add player ship sprite to the screen
     this.player = new Player(this, this.game.config.width / 2, this.game.config.height - 100, "ships", "shipGreen_manned.png", 
@@ -29,13 +30,16 @@ export class Level1 extends BaseLevel {
       this.waves[i] = this.add.group({ runChildUpdate: true }); // Group to hold all enemies
     }
 
-    this.createEnemy("basic", "ships", "shipYellow_manned.png", 0.25, 2, 100, this.shipExplosionSFX, 0, 100, 50);
-    this.createEnemy("basic", "ships", "shipYellow_manned.png", 0.25, 2, 100, this.shipExplosionSFX, 1, 150, 50);
+    this.createEnemy("basic", "ships", "shipYellow_manned.png", 0.4, 2, 100, this.shipExplosionSFX, 0, 100, 100);
+    this.createEnemy("basic", "ships", "shipBeige_manned.png", 0.25, 4, 100, this.shipExplosionSFX, 1, 200, 100);
+    this.createEnemy("basic", "ships", "shipBlue_manned.png", 0.4, 2, 100, this.shipExplosionSFX, 1, 150, 200);
+    this.createEnemy("basic", "ships", "shipPink_manned.png", 0.75, 1, 100, this.shipExplosionSFX, 1, 250, 200);
   }
 
   update(time, delta) {
-    // Laser cooldown timer
+    // Decremenent timers
     this.playerLaserCooldownTimer -= delta / 1000;
+    this.playerDamageCooldownTimer -= delta / 1000;
 
     // Update waves
     this.updateWave(delta);

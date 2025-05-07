@@ -9,16 +9,21 @@ export class BaseLevel extends Phaser.Scene {
 
         // Game feel variables
         this.playerSpeed = 10;
-        this.playerProjectileSpeed = 18;
+        this.playerProjectileSpeed = 10;
 
         // Array to keep track of active projectiles
         this.playerProjectiles = [];
 
         // Player variables
-        this.playerLaserCooldown = 0.4;
+        this.playerLaserCooldown = 0.8;
         this.playerLaserCooldownTimer = 0;
         this.playerScore = 0;
         this.playerDamage = 1;
+        this.playerDamageCooldown = 0.5;
+        this.playerDamageCooldownTimer = 0;
+        this.playerMaxHP = 1;
+        this.playerHp = this.playerMaxHP;
+        this.playerAlive = true;
 
         // Wave variables
         this.wave = 0;
@@ -78,9 +83,14 @@ export class BaseLevel extends Phaser.Scene {
         this.shipExplosionSFX = this.sound.add("shipExplosion");
     }
 
-    setupText() {
+    setupScoreText() {
         // Add score text
-        this.displayScore = this.add.bitmapText(850, 25, 'myFont', 'Score: ' + this.playerScore, 32);
+        this.displayScore = this.add.bitmapText(850, 850, 'myFont', 'Score: ' + this.playerScore, 32);
+    }
+
+    setupHealthText() {
+        // Add health text
+        this.displayHealth = this.add.bitmapText(50, 850, 'myFont', 'Hp: ' + this.playerHp, 32);
     }
 
     // Collision detection for rectangles
@@ -96,6 +106,18 @@ export class BaseLevel extends Phaser.Scene {
         }
 
         return true; // Objects are colliding
+    }
+
+    damagePlayer(damage) {
+        if (this.playerDamageCooldownTimer <= 0 && this.playerAlive) {
+            this.playerHp -= damage;
+            this.displayHealth.setText('Hp: ' + this.playerHp);
+            this.playerDamageCooldownTimer = this.playerDamageCooldown;
+            if (this.playerHp <= 0) {
+                console.log("Game Over");
+                this.playerAlive = false;
+            }
+        }
     }
 
     // Create enemy on random path based on type
