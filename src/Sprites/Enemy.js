@@ -36,6 +36,13 @@ class Enemy extends Phaser.GameObjects.Sprite {
             const point = this.path.getPoint(this.pathProgress);
             this.setPosition(point.x, point.y);
         } else {
+            this.x += this.scene.groupMoveSpd;
+            if (this.x > this.scene.game.config.width - 100) {
+                this.scene.groupMoveSpd *= -1;
+            }
+            if (this.x < 100) {
+                this.scene.groupMoveSpd *= -1;
+            }
         }
     }
 

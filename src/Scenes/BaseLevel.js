@@ -24,7 +24,10 @@ export class BaseLevel extends Phaser.Scene {
         this.wave = 0;
         this.totalWaves = 0;
         this.waves = [];
-        this.newWave = true;
+        this.pregame = true;
+        this.firstWaveStart = 5;
+        this.newWave = false;
+        this.groupMoveSpd = 5;
 
         // Enemy paths
         const basicPath1 = new Phaser.Curves.Spline([
@@ -109,21 +112,28 @@ export class BaseLevel extends Phaser.Scene {
         this.waves[wave].add(enemy);
     }
 
-    updateWave() {
-        if (this.wave >= this.totalWaves) {
-            console.log("Level complete!");
-        } else {
-            let len = this.waves[this.wave].getLength();
-            if (len == 0) {
-                this.newWave = true;
-                this.wave++;
-                console.log("Wave complete! Next wave: " + this.wave);
-            }
+    updateWave(delta) {
+        this.firstWaveStart -= delta / 1000;
+        if (this.pregame && this.firstWaveStart <= 0) {
+            this.pregame = false;
+            this.newWave = true;
+            console.log("First wave started!");
+        } else if (!this.pregame) {
+            if (this.wave >= this.totalWaves) {
+                console.log("Level complete!");
+            } else {
+                let len = this.waves[this.wave].getLength();
+                if (len == 0) {
+                    this.newWave = true;
+                    this.wave++;
+                    console.log("Wave complete! Next wave: " + this.wave);
+                }
 
-            if (this.newWave && len > 0) {
-                this.newWave = false;
-                for (let enemy of this.waves[this.wave].getChildren()) {
-                    enemy.makeActive();
+                if (this.newWave && len > 0) {
+                    this.newWave = false;
+                    for (let enemy of this.waves[this.wave].getChildren()) {
+                        enemy.makeActive();
+                    }
                 }
             }
         }

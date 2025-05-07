@@ -29,8 +29,8 @@ export class Level1 extends BaseLevel {
       this.waves[i] = this.add.group({ runChildUpdate: true }); // Group to hold all enemies
     }
 
-    this.createEnemy("basic", "ships", "shipYellow_manned.png", 0.25, 2, 100, this.shipExplosionSFX, 0);
-    this.createEnemy("basic", "ships", "shipYellow_manned.png", 0.25, 2, 100, this.shipExplosionSFX, 1);
+    this.createEnemy("basic", "ships", "shipYellow_manned.png", 0.25, 2, 100, this.shipExplosionSFX, 0, 100, 50);
+    this.createEnemy("basic", "ships", "shipYellow_manned.png", 0.25, 2, 100, this.shipExplosionSFX, 1, 150, 50);
   }
 
   update(time, delta) {
@@ -38,7 +38,7 @@ export class Level1 extends BaseLevel {
     this.playerLaserCooldownTimer -= delta / 1000;
 
     // Update waves
-    this.updateWave();
+    this.updateWave(delta);
 
     // Update the player ship
     this.player.update();
