@@ -4,7 +4,8 @@ class EnemyLaser extends Phaser.GameObjects.Sprite {
         this.visible = false;
         this.active = false;
         this.wave = scene.wave;
-        this.projSpd = projSpd;
+        this.projSpd = 15;
+        this.damage = 1;
   
         this.setScale(0.3);
         this.setDepth(-1);
@@ -15,13 +16,14 @@ class EnemyLaser extends Phaser.GameObjects.Sprite {
     update() {
         if (this.active) {
             this.y += this.projSpd;
-            if (this.y < 0) {
+            if (this.y > this.scene.game.config.height + 100) {
                 this.makeInactive();
             }
   
             // Check for collision with player
             if (this.scene.collides(this, this.scene.player)) {
-                this.scene.damagePlayer(1);
+                this.scene.damagePlayer(this.damage);
+                this.makeInactive();
             }
         }
     }
