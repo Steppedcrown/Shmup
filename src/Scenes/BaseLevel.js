@@ -31,14 +31,14 @@ export class BaseLevel extends Phaser.Scene {
 
         // Enemy paths
         const basicPath1 = new Phaser.Curves.Spline([
-            new Phaser.Math.Vector2(100, -50), 
+            new Phaser.Math.Vector2(100, 50), 
             new Phaser.Math.Vector2(150, 100),
             new Phaser.Math.Vector2(300, 200),
             new Phaser.Math.Vector2(400, 300),
             new Phaser.Math.Vector2(500, 1000)
         ]);
         const basicPath2 = new Phaser.Curves.Spline([
-            new Phaser.Math.Vector2(100, -50), 
+            new Phaser.Math.Vector2(100, 50), 
             new Phaser.Math.Vector2(200, 100),
             new Phaser.Math.Vector2(400, 200),
             new Phaser.Math.Vector2(800, 400),
@@ -133,6 +133,7 @@ export class BaseLevel extends Phaser.Scene {
                     this.newWave = false;
                     for (let enemy of this.waves[this.wave].getChildren()) {
                         enemy.makeActive();
+                        enemy.path
                     }
                 }
             }

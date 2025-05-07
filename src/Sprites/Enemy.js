@@ -30,6 +30,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
             if (this.pathProgress >= 1) {
                 this.pathProgress = 0; // Reset to the start of the path
+                this.path.points.unshift(new Phaser.Math.Vector2(this.initX, -50)); // Make ship reappear at the top
             }
 
             // Get the current point along the spline
@@ -64,5 +65,14 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
     makeActive() {
         this.waveActive = true;
+
+        // Create a new array of points starting with the current position and offset them
+        let splinePoints = [new Phaser.Math.Vector2(this.x, this.y),];
+        for (let i = 0; i < this.path.points.length; i++) {
+            splinePoints.push(new Phaser.Math.Vector2(this.x/2 + this.path.points[i].x, this.y/2 + this.path.points[i].y));
+        }
+
+        // Create a new spline with those points
+        this.path = new Phaser.Curves.Spline(splinePoints);
     }
 }
