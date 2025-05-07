@@ -13,8 +13,24 @@ export class BaseLevel extends Phaser.Scene {
         // Game feel variables
         this.playerSpeed = 10;
         this.playerProjectileSpeed = 20;
+
+        // Basic enemy variables
         this.basicProjSpd = 15;
+        this.basicLaserCooldown = 0.8;
+        this.basicDamage = 1;
+        this.basicMaxHP = 2;
+        this.basicPoints = 100;
+        this.basicMaxLasers = 3;
+        this.basicSpd = 0.4;
+
+        // Heavy enemy variables
         this.heavyProjSpd = 10;
+        this.heavyLaserCooldown = 1.25;
+        this.heavyDamage = 2;
+        this.heavyMaxHP = 4;
+        this.heavyPoints = 200;
+        this.heavyMaxLasers = 2;
+        this.heavySpd = 0.25;
 
         // Player variables
         this.playerLaserCooldown = 0.8;
@@ -181,6 +197,8 @@ export class BaseLevel extends Phaser.Scene {
         this.playerMovementSFX = this.sound.add("playerMovement", { volume: 0.1 });
         this.shipExplosionSFX = this.sound.add("shipExplosion", { volume: 0.15 });
         this.basicLaserSFX = this.sound.add("basicLaser", { volume: 0.4 });
+        this.heavyLaserSFX = this.sound.add("basicLaser", { volume: 0.4 });
+        this.beamSFX = this.sound.add("basicLaser", { volume: 0.4 });
 
         // Background music
         this.bgMusic = this.sound.add("bgMusic");
@@ -246,23 +264,48 @@ export class BaseLevel extends Phaser.Scene {
     }
 
     // Create enemy on random path based on type
-    createEnemy(type, texture, frame, speed = 0.2, maxHP, points, destroySFX, wave, initX, initY, laserSFX, projSpd, damage, maxLasers, laserCooldown) {
+    createEnemy(type, texture, frame, initX, initY, wave) {
+        let destroySFX = this.shipExplosionSFX;
+        let laserSFX = null;
         let path = null;
         let pathSet = null;
         let laserKey = "lasers";
         let laserFrame = null;
+        let laserCooldown = null;
+        let maxLasers = null;
+        let maxHP = null;
+        let points = null;
+        let projSpd = null;
+        let damage = null;
+        let speed = null;
+
+        // Set enemy properties based on type
         switch (type) {
             case "basic":
                 path = Phaser.Utils.Array.GetRandom(this.basicPaths);
+                laserFrame = "laserBlue1.png";
                 pathSet = this.basicPaths;
                 projSpd = this.basicProjSpd;
-                laserFrame = "laserBlue1.png";
+                laserCooldown = this.basicLaserCooldown;
+                maxLasers = this.basicMaxLasers;
+                maxHP = this.basicMaxHP;
+                points = this.basicPoints;
+                damage = this.basicDamage;
+                laserSFX = this.basicLaserSFX;
+                speed = this.basicSpd;
                 break;
             case "heavy":
                 path = Phaser.Utils.Array.GetRandom(this.heavyPaths);
+                laserFrame = "laserBlue2.png";
                 pathSet = this.heavyPaths;
                 projSpd = this.heavyProjSpd;
-                laserFrame = "laserBlue2.png";
+                laserCooldown = this.heavyLaserCooldown;
+                maxLasers = this.heavyMaxLasers;
+                maxHP = this.heavyMaxHP;
+                points = this.heavyPoints;
+                damage = this.heavyDamage;
+                laserSFX = this.heavyLaserSFX;
+                speed = this.heavySpd;
                 break;
             default:
                 console.error("Unknown enemy type: " + type);
