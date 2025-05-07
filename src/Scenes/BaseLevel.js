@@ -12,30 +12,17 @@ export class BaseLevel extends Phaser.Scene {
 
         // Game feel variables
         this.playerSpeed = 10;
-        this.playerProjectileSpeed = 10;
-
-        // Array to keep track of active projectiles
-        this.playerProjectiles = [];
+        this.playerProjectileSpeed = 20;
 
         // Player variables
         this.playerLaserCooldown = 0.8;
-        this.playerLaserCooldownTimer = 0;
-        this.playerScore = 0;
         this.playerDamage = 1;
         this.playerDamageCooldown = 0.5;
-        this.playerDamageCooldownTimer = 0;
         this.playerMaxHP = 3;
-        this.playerHp = this.playerMaxHP;
-        this.playerAlive = true;
 
         // Wave variables
-        this.wave = 0;
         this.totalWaves = 0;
-        this.waves = [];
-        this.midWave = true;
-        this.waveStart = 3;
-        this.waveTimer = this.waveStart;
-        this.newWave = false;
+        this.waveStart = 1;
         this.groupMoveSpd = 5;
 
         // Enemy paths
@@ -72,11 +59,59 @@ export class BaseLevel extends Phaser.Scene {
         this.load.bitmapFont('myFont', 'fonts/myFont.png', 'fonts/myFont.xml');
     }
 
+    init() {
+        // Scene variables
+
+        // Player variables
+        this.playerProjectiles = [];
+        this.playerScore = 0;
+        this.playerHp = this.playerMaxHP;
+        this.playerLaserCooldownTimer = 0;
+        this.playerDamageCooldownTimer = 0;
+        this.playerAlive = true;
+
+        // Wave variables
+        this.wave = 0;
+        this.waves = [];
+        this.midWave = true;
+        this.midWave = true;
+        this.newWave = false;
+        this.waveTimer = this.waveStart;
+
+        // Create a semi-transparent overlay
+        this.buttonRect = this.add.rectangle(this.scale.width / 2, this.scale.height / 2, this.scale.width, this.scale.height, 0x000000, 0.5);
+        this.buttonRect.setOrigin(0.5, 0.5);
+        this.buttonRect.setVisible(false); // Hide the rectangle initially
+
+        // Display "Game Over" text
+        this.gameOverText = this.add.text(this.scale.width / 2, this.scale.height / 2 - 50, "Game over", {
+            fontSize: "32px",
+            color: "#ffffff"
+        }).setOrigin(0.5);
+        this.gameOverText.setVisible(false); // Hide the text initially
+
+        // Restart button
+        this.restartButton = this.add.text(this.scale.width / 2, this.scale.height / 2 + 20, "Play Again", {
+            fontSize: "24px",
+            backgroundColor: "#ffffff",
+            color: "#000000",
+        })
+        .setInteractive()
+        .on('pointerdown', () => {
+            this.restartGame();
+        });
+        this.restartButton.setOrigin(0.5, 0.5);
+        this.restartButton.setVisible(false); // Hide the button initially
+        this.restartButton.setInteractive(false); // Disable interaction initially
+    }
+
     setupInputs() {
         // Setup keyboard controls
         this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.input.setDefaultCursor('pointer'); // Changes cursor to pointer
+
     }
 
     setupSounds() {
@@ -145,10 +180,8 @@ export class BaseLevel extends Phaser.Scene {
         if (this.midWave && this.waveTimer <= 0) {
             this.midWave = false;
             this.newWave = true;
-            console.log("Next wave started!");
         } else if (!this.midWave) {
             if (this.wave >= this.totalWaves) {
-                console.log("Level complete!");
                 if (this.nextScene) {
                     this.scene.start(this.nextScene);
                 } else {
@@ -160,7 +193,6 @@ export class BaseLevel extends Phaser.Scene {
                     this.midWave = true;
                     this.waveTimer = this.waveStart;
                     this.wave++;
-                    console.log("Wave complete!");
                 }
 
                 if (this.newWave && len > 0) {
@@ -174,8 +206,26 @@ export class BaseLevel extends Phaser.Scene {
         }
     }
 
-    gameOver() {
-        console.log("Game Over");
+    gameOver(text="Game Over") {
+        this.buttonRect.setVisible(true); // Show the overlay
+
+        this.gameOverText.setText(text); // Set the text
+        this.gameOverText.setVisible(true); // Show the text
+
+        this.restartButton.setVisible(true); // Show the button
+        this.restartButton.setInteractive(true); // Enable interaction
+    }
+
+    restartGame() {
+        this.buttonRect.setVisible(false); // Hide the overlay
+        
+        this.gameOverText.setVisible(false); // Hide the text
+
+        this.restartButton.setVisible(false); // Hide the button
+        this.restartButton.setInteractive(false); // Disable interaction
+    
+        this.scene.stop("level1");
+        this.scene.start("level1");
     }
 }
   
