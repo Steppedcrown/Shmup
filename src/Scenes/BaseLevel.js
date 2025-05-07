@@ -25,23 +25,6 @@ export class BaseLevel extends Phaser.Scene {
         this.totalWaves = 0;
         this.waveStart = 1;
         this.groupMoveSpd = 5;
-
-        // Enemy paths
-        const basicPath1 = new Phaser.Curves.Spline([
-            new Phaser.Math.Vector2(100, 50), 
-            new Phaser.Math.Vector2(150, 100),
-            new Phaser.Math.Vector2(300, 200),
-            new Phaser.Math.Vector2(400, 300),
-            new Phaser.Math.Vector2(500, 1000)
-        ]);
-        const basicPath2 = new Phaser.Curves.Spline([
-            new Phaser.Math.Vector2(100, 50), 
-            new Phaser.Math.Vector2(200, 100),
-            new Phaser.Math.Vector2(400, 200),
-            new Phaser.Math.Vector2(800, 400),
-            new Phaser.Math.Vector2(1000, 1000)
-        ]);
-        this.basicPaths = [basicPath1, basicPath1];
     }
 
     preloadAssets() {
@@ -81,7 +64,7 @@ export class BaseLevel extends Phaser.Scene {
         this.waveTimer = this.waveStart;
 
         // Create a semi-transparent overlay
-        this.buttonRect = this.add.rectangle(this.scale.width / 2, this.scale.height / 2, this.scale.width, this.scale.height, 0x000000, 0.5);
+        this.buttonRect = this.add.rectangle(this.scale.width / 2, this.scale.height / 2, 200, 50, 0x000000, 0.5);
         this.buttonRect.setOrigin(0.5, 0.5);
         this.buttonRect.setVisible(false); // Hide the rectangle initially
 
@@ -97,6 +80,7 @@ export class BaseLevel extends Phaser.Scene {
             fontSize: "24px",
             backgroundColor: "#ffffff",
             color: "#000000",
+            padding: { x: 20, y: 10 } // Add padding around the text
         })
         .setInteractive()
         .on('pointerdown', () => {
@@ -105,6 +89,23 @@ export class BaseLevel extends Phaser.Scene {
         this.restartButton.setOrigin(0.5, 0.5);
         this.restartButton.setVisible(false); // Hide the button initially
         this.restartButton.setInteractive(false); // Disable interaction initially
+
+        // Enemy paths
+        const basicPath1 = new Phaser.Curves.Spline([
+            new Phaser.Math.Vector2(100, 50), 
+            new Phaser.Math.Vector2(150, 100),
+            new Phaser.Math.Vector2(300, 200),
+            new Phaser.Math.Vector2(400, 300),
+            new Phaser.Math.Vector2(500, 1000)
+        ]);
+        const basicPath2 = new Phaser.Curves.Spline([
+            new Phaser.Math.Vector2(100, 50), 
+            new Phaser.Math.Vector2(200, 100),
+            new Phaser.Math.Vector2(400, 200),
+            new Phaser.Math.Vector2(800, 400),
+            new Phaser.Math.Vector2(1000, 1000)
+        ]);
+        this.basicPaths = [basicPath1, basicPath1];
     }
 
     setupInputs() {
