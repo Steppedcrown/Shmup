@@ -11,8 +11,9 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.hp = maxHP;
         this.maxHP = maxHP;
         this.points = points;
-        this.displayScore = scene.displayScore;
-        this.playerScore = scene.playerScore;
+
+        this.visible = false;
+        this.active = false;
 
         this.setScale(0.7);
         this.setDepth(1);
@@ -35,15 +36,21 @@ class Enemy extends Phaser.GameObjects.Sprite {
     destroy() {
         // Remove the enemy from the scene
         this.scene.waves[this.scene.wave].remove(this);
-        super.destroy();
         
         // Update score
-        this.playerScore += this.points;
-        this.displayScore.setText('Score: ' + this.playerScore);
+        this.scene.playerScore += this.points;
+        this.scene.displayScore.setText('Score: ' + this.scene.playerScore);
 
         // Play the destroy sound effect
         if (this.destroySFX) {
             this.destroySFX.play({ volume: 0.5 });
         }
+
+        super.destroy(); // destroy the enemy sprite
+    }
+
+    makeActive() {
+        this.visible = true;
+        this.active = true;
     }
 }

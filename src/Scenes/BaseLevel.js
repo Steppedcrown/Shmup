@@ -24,6 +24,7 @@ export class BaseLevel extends Phaser.Scene {
         this.wave = 0;
         this.totalWaves = 0;
         this.waves = [];
+        this.newWave = true;
 
         // Enemy paths
         const basicPath1 = new Phaser.Curves.Spline([
@@ -94,7 +95,7 @@ export class BaseLevel extends Phaser.Scene {
     }
 
     // Create enemy on random path based on type
-    createEnemy(type, texture, frame, speed = 0.2, maxHP, points, destroySFX) {
+    createEnemy(type, texture, frame, speed = 0.2, maxHP, points, destroySFX, wave) {
         let path = null;
         switch (type) {
             case "basic":
@@ -105,7 +106,27 @@ export class BaseLevel extends Phaser.Scene {
                 return;
         }
         const enemy = new Enemy(this, path, texture, frame, speed, maxHP, points, destroySFX);
-        this.waves[this.wave].add(enemy);
+        this.waves[wave].add(enemy);
     }
-  }
+
+    updateWave() {
+        if (this.wave >= this.totalWaves) {
+            console.log("Level complete!");
+        } else {
+            let len = this.waves[this.wave].getLength();
+            if (len == 0) {
+                this.newWave = true;
+                this.wave++;
+                console.log("Wave complete! Next wave: " + this.wave);
+            }
+
+            if (this.newWave && len > 0) {
+                this.newWave = false;
+                for (let enemy of this.waves[this.wave].getChildren()) {
+                    enemy.makeActive();
+                }
+            }
+        }
+    }
+}
   
