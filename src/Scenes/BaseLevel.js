@@ -111,7 +111,6 @@ export class BaseLevel extends Phaser.Scene {
         this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.input.setDefaultCursor('pointer'); // Changes cursor to pointer
-
     }
 
     setupSounds() {
@@ -152,8 +151,13 @@ export class BaseLevel extends Phaser.Scene {
             this.displayHealth.setText('Hp: ' + this.playerHp);
             this.playerDamageCooldownTimer = this.playerDamageCooldown;
             if (this.playerHp <= 0) {
-                this.gameOver();
                 this.playerAlive = false;
+                // Play the destroy sound effect
+                if (this.shipExplosionSFX) {
+                    this.shipExplosionSFX.play({ volume: 0.5 });
+                }
+                this.player.destroy();
+                this.gameOver();
             }
         }
     }
@@ -185,7 +189,7 @@ export class BaseLevel extends Phaser.Scene {
                 if (this.nextScene) {
                     this.scene.start(this.nextScene);
                 } else {
-                    this.gameOver();
+                    this.gameOver("You win!");
                 }
             } else {
                 let len = this.waves[this.wave].getLength();
