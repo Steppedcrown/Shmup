@@ -72,10 +72,11 @@ class Enemy extends Phaser.GameObjects.Sprite {
             if (this.pathProgress >= 1) {
                 this.pathProgress = 0; // Reset to the start of the path
                 this.path = Phaser.Utils.Array.GetRandom(this.pathSet); // Get a random path from the set
+                //this.path.points.unshift(new Phaser.Math.Vector2(this.initX, -75)); // Add the first point to the path
                 let splinePoints = [new Phaser.Math.Vector2(this.initX, -25),];
                 for (let i = 0; i < this.path.points.length; i++) {
-                    splinePoints.push(new Phaser.Math.Vector2(this.initX/2 + this.path.points[i].x, this.initY/2 + this.path.points[i].y));
-                }
+                    splinePoints.push(new Phaser.Math.Vector2(this.initX/4 + this.path.points[i].x, this.initY/4 + this.path.points[i].y));
+                } 
                 // Create a new spline with those points
                 this.path = new Phaser.Curves.Spline(splinePoints);
             }
@@ -130,7 +131,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
         // Create a new array of points starting with the current position and offset them
         let splinePoints = [new Phaser.Math.Vector2(this.x, this.y),];
         for (let i = 0; i < this.path.points.length; i++) {
-            splinePoints.push(new Phaser.Math.Vector2(this.x/2 + this.path.points[i].x, this.y/2 + this.path.points[i].y));
+            splinePoints.push(new Phaser.Math.Vector2(this.initX/4 + this.path.points[i].x, this.initY/4 + this.path.points[i].y));
         }
 
         // Create a new spline with those points

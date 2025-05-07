@@ -27,43 +27,71 @@ export class BaseLevel extends Phaser.Scene {
         this.waveStart = 1;
         this.groupMoveSpd = 5;
 
-        // Enemy paths
+        // Basic enemy paths
         const basicPath1 = new Phaser.Curves.Spline([
-            new Phaser.Math.Vector2(100, 50), 
-            new Phaser.Math.Vector2(150, 100),
-            new Phaser.Math.Vector2(300, 200),
+            new Phaser.Math.Vector2(100, 50),
+            new Phaser.Math.Vector2(200, 150),
             new Phaser.Math.Vector2(400, 300),
-            new Phaser.Math.Vector2(500, 1000)
+            new Phaser.Math.Vector2(600, 450),
+            new Phaser.Math.Vector2(1050, 600)
         ]);
         const basicPath2 = new Phaser.Curves.Spline([
-            new Phaser.Math.Vector2(100, 50), 
-            new Phaser.Math.Vector2(200, 100),
-            new Phaser.Math.Vector2(400, 200),
-            new Phaser.Math.Vector2(800, 400),
-            new Phaser.Math.Vector2(1000, 1000)
+            new Phaser.Math.Vector2(750, 50),
+            new Phaser.Math.Vector2(600, 200),
+            new Phaser.Math.Vector2(500, 400),
+            new Phaser.Math.Vector2(300, 600),
+            new Phaser.Math.Vector2(-100, 900)
         ]);
-        this.basicPaths = [basicPath1, basicPath2];
+        const basicPath3 = new Phaser.Curves.Spline([
+            new Phaser.Math.Vector2(0, 100),
+            new Phaser.Math.Vector2(150, 250),
+            new Phaser.Math.Vector2(400, 400),
+            new Phaser.Math.Vector2(650, 600),
+            new Phaser.Math.Vector2(1000, 950)
+        ]);
+        const basicPath4 = new Phaser.Curves.Spline([
+            new Phaser.Math.Vector2(500, 50),
+            new Phaser.Math.Vector2(520, 200),
+            new Phaser.Math.Vector2(540, 400),
+            new Phaser.Math.Vector2(560, 600),
+            new Phaser.Math.Vector2(580, 950)
+        ]);
+        this.basicPaths = [basicPath1, basicPath2, basicPath3, basicPath4];
 
         // Heavy
         const heavyPath1 = new Phaser.Curves.Spline([
-            new Phaser.Math.Vector2(100, 50), 
-            new Phaser.Math.Vector2(150, 200),
-            new Phaser.Math.Vector2(100, 350),
-            new Phaser.Math.Vector2(150, 500),
-            new Phaser.Math.Vector2(200, 650),
-            new Phaser.Math.Vector2(250, 800),
-            new Phaser.Math.Vector2(300, 1000)
+            new Phaser.Math.Vector2(100, 0),
+            new Phaser.Math.Vector2(250, 100),
+            new Phaser.Math.Vector2(400, 200),
+            new Phaser.Math.Vector2(600, 300),
+            new Phaser.Math.Vector2(800, 450),
+            new Phaser.Math.Vector2(1050, 600)
         ]);
         const heavyPath2 = new Phaser.Curves.Spline([
-            new Phaser.Math.Vector2(500, 50), 
-            new Phaser.Math.Vector2(450, 200),
-            new Phaser.Math.Vector2(400, 350),
-            new Phaser.Math.Vector2(350, 500),
-            new Phaser.Math.Vector2(300, 650),
-            new Phaser.Math.Vector2(250, 800),
-            new Phaser.Math.Vector2(200, 1000)
+            new Phaser.Math.Vector2(700, 0),
+            new Phaser.Math.Vector2(550, 100),
+            new Phaser.Math.Vector2(400, 200),
+            new Phaser.Math.Vector2(250, 300),
+            new Phaser.Math.Vector2(100, 400),
+            new Phaser.Math.Vector2(-50, 500)
         ]);
-        this.heavyPaths = [heavyPath1, heavyPath2];
+        const heavyPath3 = new Phaser.Curves.Spline([
+            new Phaser.Math.Vector2(500, 0),
+            new Phaser.Math.Vector2(600, 200),
+            new Phaser.Math.Vector2(700, 400),
+            new Phaser.Math.Vector2(750, 600),
+            new Phaser.Math.Vector2(800, 800),
+            new Phaser.Math.Vector2(850, 1000)
+        ]);
+        const heavyPath4 = new Phaser.Curves.Spline([
+            new Phaser.Math.Vector2(300, 50),
+            new Phaser.Math.Vector2(450, 200),
+            new Phaser.Math.Vector2(600, 350),
+            new Phaser.Math.Vector2(650, 450),
+            new Phaser.Math.Vector2(600, 550),
+            new Phaser.Math.Vector2(450, 950)
+        ]);
+        this.heavyPaths = [heavyPath1, heavyPath2, heavyPath3, heavyPath4];
     }
 
     preloadAssets() {
@@ -157,8 +185,7 @@ export class BaseLevel extends Phaser.Scene {
         // Background music
         this.bgMusic = this.sound.add("bgMusic");
         this.bgMusic.setLoop(true);
-        this.bgMusic.play({ volume: 0.05 });
-        if (!this.bgMusic.isPlaying) this.bgMusic.play();
+        if (!this.bgMusic.isPlaying) this.bgMusic.play({ volume: 0.05 });
     }
 
     setupScoreText() {
