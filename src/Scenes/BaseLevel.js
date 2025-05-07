@@ -14,6 +14,7 @@ export class BaseLevel extends Phaser.Scene {
         this.playerSpeed = 10;
         this.playerProjectileSpeed = 20;
         this.basicProjSpd = 15;
+        this.heavyProjSpd = 10;
 
         // Player variables
         this.playerLaserCooldown = 0.8;
@@ -42,6 +43,27 @@ export class BaseLevel extends Phaser.Scene {
             new Phaser.Math.Vector2(1000, 1000)
         ]);
         this.basicPaths = [basicPath1, basicPath1];
+
+        // Heavy
+        const heavyPath1 = new Phaser.Curves.Spline([
+            new Phaser.Math.Vector2(100, 50), 
+            new Phaser.Math.Vector2(150, 200),
+            new Phaser.Math.Vector2(100, 350),
+            new Phaser.Math.Vector2(150, 500),
+            new Phaser.Math.Vector2(200, 650),
+            new Phaser.Math.Vector2(250, 800),
+            new Phaser.Math.Vector2(300, 1000)
+        ]);
+        const heavyPath2 = new Phaser.Curves.Spline([
+            new Phaser.Math.Vector2(500, 50), 
+            new Phaser.Math.Vector2(450, 200),
+            new Phaser.Math.Vector2(400, 350),
+            new Phaser.Math.Vector2(350, 500),
+            new Phaser.Math.Vector2(300, 650),
+            new Phaser.Math.Vector2(250, 800),
+            new Phaser.Math.Vector2(200, 1000)
+        ]);
+        this.heavyPaths = [heavyPath1, heavyPath2];
     }
 
     preloadAssets() {
@@ -200,17 +222,26 @@ export class BaseLevel extends Phaser.Scene {
     createEnemy(type, texture, frame, speed = 0.2, maxHP, points, destroySFX, wave, initX, initY, laserSFX, projSpd, damage, maxLasers, laserCooldown) {
         let path = null;
         let pathSet = null;
+        let laserKey = "lasers";
+        let laserFrame = null;
         switch (type) {
             case "basic":
                 path = Phaser.Utils.Array.GetRandom(this.basicPaths);
                 pathSet = this.basicPaths;
                 projSpd = this.basicProjSpd;
+                laserFrame = "laserBlue1.png";
+                break;
+            case "heavy":
+                path = Phaser.Utils.Array.GetRandom(this.heavyPaths);
+                pathSet = this.heavyPaths;
+                projSpd = this.heavyProjSpd;
+                laserFrame = "laserBlue2.png";
                 break;
             default:
                 console.error("Unknown enemy type: " + type);
                 return;
         }
-        const enemy = new Enemy(this, path, texture, frame, pathSet, speed, maxHP, points, destroySFX, initX, initY, laserSFX, projSpd, damage, maxLasers, laserCooldown);
+        const enemy = new Enemy(this, path, texture, frame, pathSet, speed, maxHP, points, destroySFX, initX, initY, laserSFX, projSpd, damage, maxLasers, laserCooldown, laserKey, laserFrame);
         this.waves[wave].add(enemy);
     }
 

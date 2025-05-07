@@ -1,5 +1,5 @@
 class Enemy extends Phaser.GameObjects.Sprite {
-    constructor(scene, path, texture, frame, pathSet, speed = 0.2, maxHP, points, destorySFX, initX, initY, laserSFX, projSpd, damage, maxLasers, laserCooldown) {
+    constructor(scene, path, texture, frame, pathSet, speed = 0.2, maxHP, points, destorySFX, initX, initY, laserSFX, projSpd, damage, maxLasers, laserCooldown, laserKey, laserFrame) {
         // Start at the beginning of the path
         super(scene, initX, initY, texture, frame);
         this.initX = initX;
@@ -24,6 +24,8 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.damage = damage;
         this.laserCooldown = laserCooldown;
         this.laserTimer = this.laserCooldown;
+        this.laserKey = laserKey;
+        this.laserFrame = laserFrame;
 
         // Create laser group
         this.laserGroup = scene.add.group({
@@ -35,8 +37,8 @@ class Enemy extends Phaser.GameObjects.Sprite {
         // Add lasers to the group
         this.laserGroup.createMultiple({
             classType: EnemyLaser,
-            key: "lasers",
-            frame: "laserBlue1.png",
+            key: this.laserKey,
+            frame: this.laserFrame,
             active: false,
             visible: false,
             projSpd: this.projSpd,
