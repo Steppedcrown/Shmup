@@ -42,7 +42,7 @@ export class BaseLevel extends Phaser.Scene {
             new Phaser.Math.Vector2(800, 400),
             new Phaser.Math.Vector2(1000, 1000)
         ]);
-        this.basicPaths = [basicPath1, basicPath1];
+        this.basicPaths = [basicPath1, basicPath2];
 
         // Heavy
         const heavyPath1 = new Phaser.Curves.Spline([

@@ -2,8 +2,8 @@ class Enemy extends Phaser.GameObjects.Sprite {
     constructor(scene, path, texture, frame, pathSet, speed = 0.2, maxHP, points, destorySFX, initX, initY, laserSFX, projSpd, damage, maxLasers, laserCooldown, laserKey, laserFrame) {
         // Start at the beginning of the path
         super(scene, initX, initY, texture, frame);
-        this.initX = initX;
-        this.initY = initY;
+        this.initX = null;
+        this.initY = null;
 
         this.scene = scene;
         this.path = path;               
@@ -15,7 +15,6 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.maxHP = maxHP;
         this.points = points;
         this.destroyed = false;
-        this.addedPoint = false;
 
         // Lasers
         this.maxLasers = maxLasers;
@@ -72,10 +71,13 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
             if (this.pathProgress >= 1) {
                 this.pathProgress = 0; // Reset to the start of the path
-                if (!this.addedPoint) {
-                    this.path.points.unshift(new Phaser.Math.Vector2(this.initX, -50)); // Make ship reappear at the top
-                    this.addedPoint = true;
+                this.path = Phaser.Utils.Array.GetRandom(this.pathSet); // Get a random path from the set
+                let splinePoints = [new Phaser.Math.Vector2(this.initX, -25),];
+                for (let i = 0; i < this.path.points.length; i++) {
+                    splinePoints.push(new Phaser.Math.Vector2(this.initX/2 + this.path.points[i].x, this.initY/2 + this.path.points[i].y));
                 }
+                // Create a new spline with those points
+                this.path = new Phaser.Curves.Spline(splinePoints);
             }
 
             // Get the current point along the spline
@@ -122,6 +124,8 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
     makeActive() {
         this.waveActive = true;
+        this.initX = this.x;
+        this.initY = this.y;
 
         // Create a new array of points starting with the current position and offset them
         let splinePoints = [new Phaser.Math.Vector2(this.x, this.y),];

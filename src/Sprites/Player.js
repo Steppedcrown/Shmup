@@ -12,7 +12,7 @@ class Player extends Phaser.GameObjects.Sprite {
         this.playerLaserSFX = laserSFX;
 
         // Set the scale of the player ship
-        this.setScale(0.8);
+        this.setScale(0.5);
         this.setDepth(0);
         this.setOrigin(0.5, 0.5);
 
