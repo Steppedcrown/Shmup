@@ -15,6 +15,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.maxHP = maxHP;
         this.points = points;
         this.destroyed = false;
+        this.addedPoint = false;
 
         // Lasers
         this.maxLasers = maxLasers;
@@ -69,7 +70,10 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
             if (this.pathProgress >= 1) {
                 this.pathProgress = 0; // Reset to the start of the path
-                this.path.points.unshift(new Phaser.Math.Vector2(this.initX, -50)); // Make ship reappear at the top
+                if (!this.addedPoint) {
+                    this.path.points.unshift(new Phaser.Math.Vector2(this.initX, -50)); // Make ship reappear at the top
+                    this.addedPoint = true;
+                }
             }
 
             // Get the current point along the spline
