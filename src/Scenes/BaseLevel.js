@@ -95,7 +95,7 @@ export class BaseLevel extends Phaser.Scene {
     }
 
     // Create enemy on random path based on type
-    createEnemy(type, texture, frame, speed = 0.2, maxHP, points, destroySFX, wave) {
+    createEnemy(type, texture, frame, speed = 0.2, maxHP, points, destroySFX, wave, initX, initY) {
         let path = null;
         switch (type) {
             case "basic":
@@ -105,7 +105,7 @@ export class BaseLevel extends Phaser.Scene {
                 console.error("Unknown enemy type: " + type);
                 return;
         }
-        const enemy = new Enemy(this, path, texture, frame, speed, maxHP, points, destroySFX);
+        const enemy = new Enemy(this, path, texture, frame, speed, maxHP, points, destroySFX, initX, initY);
         this.waves[wave].add(enemy);
     }
 

@@ -1,7 +1,9 @@
 class Enemy extends Phaser.GameObjects.Sprite {
-    constructor(scene, path, texture, frame, speed = 0.2, maxHP, points, destorySFX) {
+    constructor(scene, path, texture, frame, speed = 0.2, maxHP, points, destorySFX, initX, initY) {
         // Start at the beginning of the path
-        super(scene, path.getStartPoint().x, path.getStartPoint().y, texture, frame);
+        super(scene, initX, initY, texture, frame);
+        this.initX = initX;
+        this.initY = initY;
 
         this.scene = scene;
         this.path = path;               
@@ -12,8 +14,9 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.maxHP = maxHP;
         this.points = points;
 
-        this.visible = false;
-        this.active = false;
+        this.visible = true;
+        this.active = true;
+        this.waveActive = false;
 
         this.setScale(0.7);
         this.setDepth(1);
@@ -22,15 +25,18 @@ class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     update(_, delta) {
-        this.pathProgress += this.speed * (delta / 1000);
+        if (this.waveActive) {
+            this.pathProgress += this.speed * (delta / 1000);
 
-        if (this.pathProgress >= 1) {
-            this.pathProgress = 0; // Reset to the start of the path
+            if (this.pathProgress >= 1) {
+                this.pathProgress = 0; // Reset to the start of the path
+            }
+
+            // Get the current point along the spline
+            const point = this.path.getPoint(this.pathProgress);
+            this.setPosition(point.x, point.y);
+        } else {
         }
-
-        // Get the current point along the spline
-        const point = this.path.getPoint(this.pathProgress);
-        this.setPosition(point.x, point.y);
     }
 
     destroy() {
@@ -50,7 +56,6 @@ class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     makeActive() {
-        this.visible = true;
-        this.active = true;
+        this.waveActive = true;
     }
 }
