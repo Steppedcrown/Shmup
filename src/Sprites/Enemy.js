@@ -1,5 +1,5 @@
 class Enemy extends Phaser.GameObjects.Sprite {
-    constructor(scene, path, texture, frame, pathSet, speed = 0.2, maxHP, points, destorySFX, initX, initY) {
+    constructor(scene, path, texture, frame, pathSet, speed = 0.2, maxHP, points, destorySFX, initX, initY, laserSFX) {
         // Start at the beginning of the path
         super(scene, initX, initY, texture, frame);
         this.initX = initX;
@@ -16,6 +16,12 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.points = points;
         this.destroyed = false;
 
+        // Lasers
+        this.laserSFX = laserSFX;
+        console.log(laserSFX);
+        this.laserCooldown = 2;
+        this.laserTimer = this.laserCooldown;
+
         this.visible = true;
         this.active = true;
         this.waveActive = false;
@@ -29,6 +35,12 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
     update(_, delta) {
         if (this.waveActive) {
+            this.laserTimer -= delta / 1000;
+            if (this.laserTimer < 0) {
+                this.laserTimer = this.laserCooldown;
+                this.shoot();
+            }
+
             this.pathProgress += this.speed * (delta / 1000);
 
             if (this.pathProgress >= 1) {
@@ -89,5 +101,13 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
         // Create a new spline with those points
         this.path = new Phaser.Curves.Spline(splinePoints);
+    }
+
+    shoot() {
+        // Play firing sound
+        this.laserSFX.play({
+            volume: 0.25,
+            detune: Phaser.Math.Between(-200, 200)
+        });
     }
 }

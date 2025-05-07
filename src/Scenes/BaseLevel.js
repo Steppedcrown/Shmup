@@ -54,6 +54,7 @@ export class BaseLevel extends Phaser.Scene {
         this.load.audio("playerLaser", "audio/laserRetro_000.ogg");
         this.load.audio("playerMovement", "audio/spaceEngine_003.ogg");
         this.load.audio("shipExplosion", "audio/explosionCrunch_001.ogg");
+        this.load.audio("basicLaser", "audio/laserSmall_004.ogg");
 
         // Font
         this.load.bitmapFont('myFont', 'fonts/myFont.png', 'fonts/myFont.xml');
@@ -118,6 +119,7 @@ export class BaseLevel extends Phaser.Scene {
         this.playerLaserSFX = this.sound.add("playerLaser");
         this.playerMovementSFX = this.sound.add("playerMovement");
         this.shipExplosionSFX = this.sound.add("shipExplosion");
+        this.basicLaserSFX = this.sound.add("basicLaser");
     }
 
     setupScoreText() {
@@ -163,7 +165,7 @@ export class BaseLevel extends Phaser.Scene {
     }
 
     // Create enemy on random path based on type
-    createEnemy(type, texture, frame, speed = 0.2, maxHP, points, destroySFX, wave, initX, initY) {
+    createEnemy(type, texture, frame, speed = 0.2, maxHP, points, destroySFX, wave, initX, initY, laserSFX) {
         let path = null;
         let pathSet = null;
         switch (type) {
@@ -175,7 +177,7 @@ export class BaseLevel extends Phaser.Scene {
                 console.error("Unknown enemy type: " + type);
                 return;
         }
-        const enemy = new Enemy(this, path, texture, frame, pathSet, speed, maxHP, points, destroySFX, initX, initY);
+        const enemy = new Enemy(this, path, texture, frame, pathSet, speed, maxHP, points, destroySFX, initX, initY, laserSFX);
         this.waves[wave].add(enemy);
     }
 
