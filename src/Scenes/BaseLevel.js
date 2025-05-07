@@ -7,6 +7,9 @@ export class BaseLevel extends Phaser.Scene {
         this.dKey = null;
         this.spaceKey = null;
 
+        // Scene variables
+        this.nextScene = null;
+
         // Game feel variables
         this.playerSpeed = 10;
         this.playerProjectileSpeed = 10;
@@ -21,7 +24,7 @@ export class BaseLevel extends Phaser.Scene {
         this.playerDamage = 1;
         this.playerDamageCooldown = 0.5;
         this.playerDamageCooldownTimer = 0;
-        this.playerMaxHP = 1;
+        this.playerMaxHP = 3;
         this.playerHp = this.playerMaxHP;
         this.playerAlive = true;
 
@@ -114,7 +117,7 @@ export class BaseLevel extends Phaser.Scene {
             this.displayHealth.setText('Hp: ' + this.playerHp);
             this.playerDamageCooldownTimer = this.playerDamageCooldown;
             if (this.playerHp <= 0) {
-                console.log("Game Over");
+                this.gameOver();
                 this.playerAlive = false;
             }
         }
@@ -123,15 +126,17 @@ export class BaseLevel extends Phaser.Scene {
     // Create enemy on random path based on type
     createEnemy(type, texture, frame, speed = 0.2, maxHP, points, destroySFX, wave, initX, initY) {
         let path = null;
+        let pathSet = null;
         switch (type) {
             case "basic":
                 path = Phaser.Utils.Array.GetRandom(this.basicPaths);
+                pathSet = this.basicPaths;
                 break;
             default:
                 console.error("Unknown enemy type: " + type);
                 return;
         }
-        const enemy = new Enemy(this, path, texture, frame, speed, maxHP, points, destroySFX, initX, initY);
+        const enemy = new Enemy(this, path, texture, frame, pathSet, speed, maxHP, points, destroySFX, initX, initY);
         this.waves[wave].add(enemy);
     }
 
@@ -144,6 +149,11 @@ export class BaseLevel extends Phaser.Scene {
         } else if (!this.midWave) {
             if (this.wave >= this.totalWaves) {
                 console.log("Level complete!");
+                if (this.nextScene) {
+                    this.scene.start(this.nextScene);
+                } else {
+                    this.gameOver();
+                }
             } else {
                 let len = this.waves[this.wave].getLength();
                 if (len == 0) {
@@ -162,6 +172,10 @@ export class BaseLevel extends Phaser.Scene {
                 }
             }
         }
+    }
+
+    gameOver() {
+        console.log("Game Over");
     }
 }
   

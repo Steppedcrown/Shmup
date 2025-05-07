@@ -1,5 +1,5 @@
 class Enemy extends Phaser.GameObjects.Sprite {
-    constructor(scene, path, texture, frame, speed = 0.2, maxHP, points, destorySFX, initX, initY) {
+    constructor(scene, path, texture, frame, pathSet, speed = 0.2, maxHP, points, destorySFX, initX, initY) {
         // Start at the beginning of the path
         super(scene, initX, initY, texture, frame);
         this.initX = initX;
@@ -8,7 +8,8 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.scene = scene;
         this.path = path;               
         this.pathProgress = 0;         
-        this.speed = speed;        
+        this.speed = speed;
+        this.pathSet = pathSet;     
         this.destroySFX = destorySFX;
         this.hp = maxHP;
         this.maxHP = maxHP;
