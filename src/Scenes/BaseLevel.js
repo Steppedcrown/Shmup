@@ -18,7 +18,7 @@ export class BaseLevel extends Phaser.Scene {
         this.playerLaserCooldown = 0.8;
         this.playerDamage = 1;
         this.playerDamageCooldown = 0.5;
-        this.playerMaxHP = 3;
+        this.playerMaxHP = 1;
 
         // Wave variables
         this.totalWaves = 0;
@@ -40,7 +40,7 @@ export class BaseLevel extends Phaser.Scene {
             new Phaser.Math.Vector2(800, 400),
             new Phaser.Math.Vector2(1000, 1000)
         ]);
-        this.basicPaths = [basicPath1, basicPath2];
+        this.basicPaths = [basicPath1, basicPath1];
     }
 
     preloadAssets() {
@@ -156,7 +156,7 @@ export class BaseLevel extends Phaser.Scene {
                 if (this.shipExplosionSFX) {
                     this.shipExplosionSFX.play({ volume: 0.5 });
                 }
-                this.player.destroy();
+                this.player.setVisible(false); // Hide the player ship
                 this.gameOver();
             }
         }
@@ -227,6 +227,21 @@ export class BaseLevel extends Phaser.Scene {
 
         this.restartButton.setVisible(false); // Hide the button
         this.restartButton.setInteractive(false); // Disable interaction
+
+        // Clear any existing waves
+        if (this.waves) {
+            for (let wave of this.waves) {
+                wave.clear(true, true); // Clear the wave group
+            }
+        }
+
+        // Clear player projectiles
+        if (this.playerProjectiles) {
+            for (let projectile of this.playerProjectiles) {
+                projectile.destroy();
+            }
+            this.playerProjectiles = [];
+        }
     
         this.scene.stop("level1");
         this.scene.start("level1");

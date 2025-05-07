@@ -14,6 +14,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.hp = maxHP;
         this.maxHP = maxHP;
         this.points = points;
+        this.destroyed = false;
 
         this.visible = true;
         this.active = true;
@@ -50,19 +51,31 @@ class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     destroy() {
-        // Remove the enemy from the scene
-        this.scene.waves[this.scene.wave].remove(this);
-        
-        // Update score
+        if (this.destroyed) return; // Prevent double destruction
+        this.destroyed = true; // Mark as destroyed
+
+        // Update score 
         this.scene.playerScore += this.points;
         this.scene.displayScore.setText('Score: ' + this.scene.playerScore);
 
         // Play the destroy sound effect
-        if (this.destroySFX) {
+        if (this.destroySFX && this.scene.playerAlive) {
             this.destroySFX.play({ volume: 0.5 });
         }
 
         super.destroy(); // destroy the enemy sprite
+
+        // Remove the enemy from the scene
+        if (
+            this.scene &&
+            this.scene.waves &&
+            this.scene.wave !== undefined &&
+            this.scene.waves[this.scene.wave]
+        ) {
+            // Remove the enemy from the scene
+            this.scene.waves[this.scene.wave].remove(this, true, true);
+
+        }
     }
 
     makeActive() {
