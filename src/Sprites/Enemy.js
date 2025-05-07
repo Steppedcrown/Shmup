@@ -100,7 +100,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
         // Play the destroy sound effect
         if (this.destroySFX && this.scene.playerAlive) {
-            this.destroySFX.play({ volume: 0.5 });
+            this.destroySFX.play();
         }
 
         super.destroy(); // destroy the enemy sprite
@@ -141,7 +141,6 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
             // Play firing sound
             this.laserSFX.play({
-                volume: 0.25,
                 detune: Phaser.Math.Between(-200, 200)
             });
         }

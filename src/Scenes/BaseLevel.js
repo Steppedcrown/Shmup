@@ -57,6 +57,9 @@ export class BaseLevel extends Phaser.Scene {
         this.load.audio("shipExplosion", "audio/explosionCrunch_001.ogg");
         this.load.audio("basicLaser", "audio/laserSmall_004.ogg");
 
+        // Background music
+        this.load.audio("bgMusic", "audio/brain-implant-cyberpunk-sci-fi-trailer-action-intro-330416.mp3");
+
         // Font
         this.load.bitmapFont('myFont', 'fonts/myFont.png', 'fonts/myFont.xml');
     }
@@ -118,10 +121,16 @@ export class BaseLevel extends Phaser.Scene {
 
     setupSounds() {
         // Setup sounds
-        this.playerLaserSFX = this.sound.add("playerLaser");
-        this.playerMovementSFX = this.sound.add("playerMovement");
-        this.shipExplosionSFX = this.sound.add("shipExplosion");
-        this.basicLaserSFX = this.sound.add("basicLaser");
+        this.playerLaserSFX = this.sound.add("playerLaser", { volume: 0.12 });
+        this.playerMovementSFX = this.sound.add("playerMovement", { volume: 0.1 });
+        this.shipExplosionSFX = this.sound.add("shipExplosion", { volume: 0.15 });
+        this.basicLaserSFX = this.sound.add("basicLaser", { volume: 0.4 });
+
+        // Background music
+        this.bgMusic = this.sound.add("bgMusic");
+        this.bgMusic.setLoop(true);
+        this.bgMusic.play({ volume: 0.05 });
+        if (!this.bgMusic.isPlaying) this.bgMusic.play();
     }
 
     setupScoreText() {
@@ -158,7 +167,7 @@ export class BaseLevel extends Phaser.Scene {
                 this.playerAlive = false;
                 // Play the destroy sound effect
                 if (this.shipExplosionSFX) {
-                    this.shipExplosionSFX.play({ volume: 0.5 });
+                    this.shipExplosionSFX.play({ volume: 0.25 });
                 }
                 this.player.setVisible(false); // Hide the player ship
                 this.gameOver();

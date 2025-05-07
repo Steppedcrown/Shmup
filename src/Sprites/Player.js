@@ -67,7 +67,7 @@ class Player extends Phaser.GameObjects.Sprite {
             // Play/stop engine sound when moving
             if (moving) {
                 if (!this.playerMovementSFX.isPlaying) {
-                this.playerMovementSFX.play({ volume: 0.2, loop: true });
+                this.playerMovementSFX.play();
                 }
             } else {
                 if (this.playerMovementSFX.isPlaying) {
@@ -86,7 +86,6 @@ class Player extends Phaser.GameObjects.Sprite {
 
                     // Play firing sound
                     this.playerLaserSFX.play({
-                        volume: 0.25,
                         detune: Phaser.Math.Between(-200, 200)
                     });
                 }
