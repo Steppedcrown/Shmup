@@ -1,5 +1,5 @@
 class Enemy extends Phaser.GameObjects.Sprite {
-    constructor(scene, path, texture, frame, pathSet, speed = 0.2, maxHP, points, destorySFX, initX, initY, laserSFX) {
+    constructor(scene, path, texture, frame, pathSet, speed = 0.2, maxHP, points, destorySFX, initX, initY, laserSFX, projSpd) {
         // Start at the beginning of the path
         super(scene, initX, initY, texture, frame);
         this.initX = initX;
@@ -18,9 +18,28 @@ class Enemy extends Phaser.GameObjects.Sprite {
 
         // Lasers
         this.laserSFX = laserSFX;
-        console.log(laserSFX);
+        this.projSpd = projSpd;
         this.laserCooldown = 2;
         this.laserTimer = this.laserCooldown;
+
+        // Create laser group
+        this.laserGroup = scene.add.group({
+            active: true,
+            runChildUpdate: true,
+            maxSize: 5
+        });
+
+        // Add lasers to the group
+        this.laserGroup.createMultiple({
+            classType: EnemyLaser,
+            key: "lasers",
+            frame: "laserBlue1.png",
+            active: false,
+            visible: false,
+            projSpd: this.projSpd,
+            setXY: { x: -100, y: -100 },  // hides inactive lasers
+            repeat: this.laserGroup.maxSize - 1
+        });
 
         this.visible = true;
         this.active = true;
@@ -37,7 +56,6 @@ class Enemy extends Phaser.GameObjects.Sprite {
         if (this.waveActive) {
             this.laserTimer -= delta / 1000;
             if (this.laserTimer < 0) {
-                this.laserTimer = this.laserCooldown;
                 this.shoot();
             }
 
@@ -104,10 +122,18 @@ class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     shoot() {
-        // Play firing sound
-        this.laserSFX.play({
-            volume: 0.25,
-            detune: Phaser.Math.Between(-200, 200)
-        });
+        let laser = this.laserGroup.getFirstDead(); // Get a dead laser from the group
+        if (laser) { // If there is a dead laser available
+            this.laserTimer = this.laserCooldown; // Reset cooldown
+            laser.makeActive(); // Activate the laser
+            laser.x = this.x; // Set laser position to player position
+            laser.y = this.y - (this.displayHeight/2); // Set laser position to just above the player
+
+            // Play firing sound
+            this.laserSFX.play({
+                volume: 0.25,
+                detune: Phaser.Math.Between(-200, 200)
+            });
+        }
     }
 }

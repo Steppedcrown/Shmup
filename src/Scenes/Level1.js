@@ -32,11 +32,11 @@ export class Level1 extends BaseLevel {
     for (let i = 0; i < this.totalWaves; i++) {
       this.waves[i] = this.add.group({ runChildUpdate: true }); // Group to hold all enemies
     }
-    console.log(this.basicLaserSFX);
-    this.createEnemy("basic", "ships", "shipYellow_manned.png", 0.4, 1, 100, this.shipExplosionSFX, 0, 100, 100, this.basicLaserSFX);
-    //this.createEnemy("basic", "ships", "shipBeige_manned.png", 0.25, 4, 100, this.shipExplosionSFX, 1, 200, 100, this.basicLaserSFX);
-    //this.createEnemy("basic", "ships", "shipBlue_manned.png", 0.4, 2, 100, this.shipExplosionSFX, 1, 150, 200, this.basicLaserSFX);
-    //this.createEnemy("basic", "ships", "shipPink_manned.png", 0.75, 1, 100, this.shipExplosionSFX, 1, 250, 200, this.basicLaserSFX);
+
+    this.createEnemy("basic", "ships", "shipYellow_manned.png", 0.4, 1, 100, this.shipExplosionSFX, 0, 100, 100, this.basicLaserSFX, 15);
+    //this.createEnemy("basic", "ships", "shipBeige_manned.png", 0.25, 4, 100, this.shipExplosionSFX, 1, 200, 100, this.basicLaserSFX, 15);
+    //this.createEnemy("basic", "ships", "shipBlue_manned.png", 0.4, 2, 100, this.shipExplosionSFX, 1, 150, 200, this.basicLaserSFX, 15);
+    //this.createEnemy("basic", "ships", "shipPink_manned.png", 0.75, 1, 100, this.shipExplosionSFX, 1, 250, 200, this.basicLaserSFX, 15);
   }
 
   update(time, delta) {
