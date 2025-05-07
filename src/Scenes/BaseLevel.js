@@ -18,8 +18,8 @@ export class BaseLevel extends Phaser.Scene {
         this.basicProjSpd = 15;
         this.basicLaserCooldown = 0.8;
         this.basicDamage = 1;
-        this.basicMaxHP = 2;
-        this.basicPoints = 100;
+        this.basicMaxHP = 1;
+        this.basicPoints = 150;
         this.basicMaxLasers = 3;
         this.basicSpd = 0.4;
 
@@ -28,9 +28,18 @@ export class BaseLevel extends Phaser.Scene {
         this.heavyLaserCooldown = 1.25;
         this.heavyDamage = 2;
         this.heavyMaxHP = 4;
-        this.heavyPoints = 200;
+        this.heavyPoints = 250;
         this.heavyMaxLasers = 2;
         this.heavySpd = 0.25;
+
+        // Beam enemy variables
+        this.beamProjSpd = 5;
+        this.beamLaserCooldown = 0.2;
+        this.beamDamage = 1;
+        this.beamMaxHP = 2;
+        this.beamPoints = 300;
+        this.beamMaxLasers = 20;
+        this.beamSpd = 0.5;
 
         // Player variables
         this.playerLaserCooldown = 0.8;
@@ -108,6 +117,19 @@ export class BaseLevel extends Phaser.Scene {
             new Phaser.Math.Vector2(450, 950)
         ]);
         this.heavyPaths = [heavyPath1, heavyPath2, heavyPath3, heavyPath4];
+
+        // Beam
+        const beamPath1 = new Phaser.Curves.Spline([
+            new Phaser.Math.Vector2(100, 0),
+            new Phaser.Math.Vector2(200, 100),
+            new Phaser.Math.Vector2(300, 200),
+            new Phaser.Math.Vector2(400, 200),
+            new Phaser.Math.Vector2(300, 200),
+            new Phaser.Math.Vector2(200, 200),
+            new Phaser.Math.Vector2(100, 200),
+            new Phaser.Math.Vector2(-100, 200)
+        ]);
+        this.beamPaths = [beamPath1];
     }
 
     preloadAssets() {
@@ -264,7 +286,9 @@ export class BaseLevel extends Phaser.Scene {
     }
 
     // Create enemy on random path based on type
-    createEnemy(type, texture, frame, initX, initY, wave) {
+    createEnemy(type, initX, initY, wave) {
+        let texture = "ships";
+        let frame = null;
         let destroySFX = this.shipExplosionSFX;
         let laserSFX = null;
         let path = null;
@@ -284,6 +308,7 @@ export class BaseLevel extends Phaser.Scene {
             case "basic":
                 path = Phaser.Utils.Array.GetRandom(this.basicPaths);
                 laserFrame = "laserBlue1.png";
+                frame = "shipBlue_manned.png";
                 pathSet = this.basicPaths;
                 projSpd = this.basicProjSpd;
                 laserCooldown = this.basicLaserCooldown;
@@ -296,7 +321,8 @@ export class BaseLevel extends Phaser.Scene {
                 break;
             case "heavy":
                 path = Phaser.Utils.Array.GetRandom(this.heavyPaths);
-                laserFrame = "laserBlue2.png";
+                laserFrame = "laserBeige2.png";
+                frame = "shipBeige_manned.png";
                 pathSet = this.heavyPaths;
                 projSpd = this.heavyProjSpd;
                 laserCooldown = this.heavyLaserCooldown;
@@ -306,6 +332,20 @@ export class BaseLevel extends Phaser.Scene {
                 damage = this.heavyDamage;
                 laserSFX = this.heavyLaserSFX;
                 speed = this.heavySpd;
+                break;
+            case "beam":
+                path = Phaser.Utils.Array.GetRandom(this.beamPaths);
+                laserFrame = "laserPink1.png";
+                frame = "shipPink_manned.png";
+                pathSet = this.basicPaths;
+                projSpd = this.beamProjSpd;
+                laserCooldown = this.beamLaserCooldown;
+                maxLasers = this.beamMaxLasers;
+                maxHP = this.beamMaxHP;
+                points = this.beamPoints;
+                damage = this.beamDamage;
+                laserSFX = this.beamSFX;
+                speed = this.beamSpd;
                 break;
             default:
                 console.error("Unknown enemy type: " + type);
