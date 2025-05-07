@@ -19,7 +19,7 @@ export class BaseLevel extends Phaser.Scene {
         this.playerLaserCooldown = 0.8;
         this.playerDamage = 1;
         this.playerDamageCooldown = 0.5;
-        this.playerMaxHP = 1;
+        this.playerMaxHP = 5;
 
         // Wave variables
         this.totalWaves = 0;
@@ -166,7 +166,7 @@ export class BaseLevel extends Phaser.Scene {
     }
 
     // Create enemy on random path based on type
-    createEnemy(type, texture, frame, speed = 0.2, maxHP, points, destroySFX, wave, initX, initY, laserSFX, projSpd, damage) {
+    createEnemy(type, texture, frame, speed = 0.2, maxHP, points, destroySFX, wave, initX, initY, laserSFX, projSpd, damage, maxLasers, laserCooldown) {
         let path = null;
         let pathSet = null;
         switch (type) {
@@ -179,7 +179,7 @@ export class BaseLevel extends Phaser.Scene {
                 console.error("Unknown enemy type: " + type);
                 return;
         }
-        const enemy = new Enemy(this, path, texture, frame, pathSet, speed, maxHP, points, destroySFX, initX, initY, laserSFX, projSpd, damage);
+        const enemy = new Enemy(this, path, texture, frame, pathSet, speed, maxHP, points, destroySFX, initX, initY, laserSFX, projSpd, damage, maxLasers, laserCooldown);
         this.waves[wave].add(enemy);
     }
 
