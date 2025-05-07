@@ -24,8 +24,9 @@ export class BaseLevel extends Phaser.Scene {
         this.wave = 0;
         this.totalWaves = 0;
         this.waves = [];
-        this.pregame = true;
-        this.firstWaveStart = 5;
+        this.midWave = true;
+        this.waveStart = 3;
+        this.waveTimer = this.waveStart;
         this.newWave = false;
         this.groupMoveSpd = 5;
 
@@ -113,20 +114,21 @@ export class BaseLevel extends Phaser.Scene {
     }
 
     updateWave(delta) {
-        this.firstWaveStart -= delta / 1000;
-        if (this.pregame && this.firstWaveStart <= 0) {
-            this.pregame = false;
+        this.waveTimer -= delta / 1000;
+        if (this.midWave && this.waveTimer <= 0) {
+            this.midWave = false;
             this.newWave = true;
-            console.log("First wave started!");
-        } else if (!this.pregame) {
+            console.log("Next wave started!");
+        } else if (!this.midWave) {
             if (this.wave >= this.totalWaves) {
                 console.log("Level complete!");
             } else {
                 let len = this.waves[this.wave].getLength();
                 if (len == 0) {
-                    this.newWave = true;
+                    this.midWave = true;
+                    this.waveTimer = this.waveStart;
                     this.wave++;
-                    console.log("Wave complete! Next wave: " + this.wave);
+                    console.log("Wave complete!");
                 }
 
                 if (this.newWave && len > 0) {
