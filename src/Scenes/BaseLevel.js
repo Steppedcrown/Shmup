@@ -15,16 +15,16 @@ export class BaseLevel extends Phaser.Scene {
         this.playerProjectileSpeed = 18;
 
         // Basic enemy variables
-        this.basicProjSpd = 20;
+        this.basicProjSpd = 15;
         this.basicLaserCooldown = 0.8;
         this.basicDamage = 1;
         this.basicMaxHP = 1;
         this.basicPoints = 150;
         this.basicMaxLasers = 5;
-        this.basicSpd = 0.25;
+        this.basicSpd = 0.15;
 
         // Heavy enemy variables
-        this.heavyProjSpd = 15;
+        this.heavyProjSpd = 12;
         this.heavyLaserCooldown = 1.25;
         this.heavyDamage = 2;
         this.heavyMaxHP = 4;
@@ -307,15 +307,15 @@ export class BaseLevel extends Phaser.Scene {
 
     setupScoreText() {
         // Add score text
-        this.displayScore = this.add.bitmapText(850, 850, 'myFont', 'Score: ' + this.registry.get('playerScore'), 32);
+        this.displayScore = this.add.bitmapText(this.game.config.width - 175, this.game.config.height - 50, 'myFont', 'Score: ' + this.registry.get('playerScore'), 32);
 
         // Add high score text
-        this.displayHighScore = this.add.bitmapText(850, 800, 'myFont', 'High: ' + (parseInt(localStorage.getItem('highScore')) || 0), 32);
+        this.displayHighScore = this.add.bitmapText(this.game.config.width - 175, this.game.config.height - 100, 'myFont', 'High: ' + (parseInt(localStorage.getItem('highScore')) || 0), 32);
     }
 
     setupHealthText() {
         // Add health text
-        this.displayHealth = this.add.bitmapText(50, 850, 'myFont', 'Hp: ' + this.playerHp, 32);
+        this.displayHealth = this.add.bitmapText(50, this.game.config.height - 50, 'myFont', 'Hp: ' + this.playerHp, 32);
     }
 
     moveBackground() {
