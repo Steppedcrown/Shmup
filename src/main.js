@@ -13,6 +13,7 @@
 "use strict"
 
 import { Level1 } from "./Scenes/Level1.js";
+import { Level2 } from "./Scenes/Level2.js";
 
 // game config
 let config = {
@@ -23,7 +24,7 @@ let config = {
     },
     width: 1000,
     height: 900,
-    scene: [Level1],
+    scene: [Level1, Level2],
     fps: { forceSetTimeOut: true, target: 60 }
 }
 
