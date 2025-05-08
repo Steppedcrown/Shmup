@@ -144,6 +144,10 @@ export class BaseLevel extends Phaser.Scene {
         this.load.audio("playerMovement", "audio/spaceEngine_003.ogg");
         this.load.audio("shipExplosion", "audio/explosionCrunch_001.ogg");
         this.load.audio("basicLaser", "audio/laserSmall_004.ogg");
+        this.load.audio("heavyLaser", "audio/laserLarge_000.ogg");
+        this.load.audio("beamLaser", "audio/laserSmall_001.ogg");
+    
+        // Player ship
 
         // Background music
         this.load.audio("bgMusic", "audio/brain-implant-cyberpunk-sci-fi-trailer-action-intro-330416.mp3");
@@ -241,8 +245,8 @@ export class BaseLevel extends Phaser.Scene {
         this.playerMovementSFX = this.sound.add("playerMovement", { volume: 0.1 });
         this.shipExplosionSFX = this.sound.add("shipExplosion", { volume: 0.15 });
         this.basicLaserSFX = this.sound.add("basicLaser", { volume: 0.4 });
-        this.heavyLaserSFX = this.sound.add("basicLaser", { volume: 0.4 });
-        this.beamSFX = this.sound.add("basicLaser", { volume: 0.4 });
+        this.heavyLaserSFX = this.sound.add("heavyLaser", { volume: 0.4 });
+        this.beamSFX = this.sound.add("beamLaser", { volume: 0.4 });
     }
 
     backgroundMusic() {
