@@ -217,10 +217,6 @@ export class BaseLevel extends Phaser.Scene {
         let playerScore = this.registry.get('playerScore') || 0;
         this.registry.set('playerScore', playerScore);
 
-        // Save high score
-        let highScore = this.registry.get('highScore') || 0;
-        this.registry.set('highScore', highScore);
-
         // Add background
         this.starfield1 = this.add.image(0, 0, "starfield1").setOrigin(0, 0).setScale(1).setDepth(-100);
         this.starfield2 = this.add.image(0, 900, "starfield2").setOrigin(0, 0).setScale(1).setDepth(-100);
@@ -314,7 +310,7 @@ export class BaseLevel extends Phaser.Scene {
         this.displayScore = this.add.bitmapText(850, 850, 'myFont', 'Score: ' + this.registry.get('playerScore'), 32);
 
         // Add high score text
-        this.displayHighScore = this.add.bitmapText(850, 800, 'myFont', 'High: ' + this.registry.get('highScore'), 32);
+        this.displayHighScore = this.add.bitmapText(850, 800, 'myFont', 'High: ' + (parseInt(localStorage.getItem('highScore')) || 0), 32);
     }
 
     setupHealthText() {
@@ -494,13 +490,12 @@ export class BaseLevel extends Phaser.Scene {
 
         this.restartButton.setVisible(false); // Hide the button
         this.restartButton.setInteractive(false); // Disable interaction
-
-        // Save high score
-        let highScore = this.registry.get('highScore');
+        
         let playerScore = this.registry.get('playerScore');
-        if (playerScore > highScore) {
-            this.registry.set('highScore', playerScore);
-            this.displayHighScore.setText('High: ' + this.registry.get('highScore'));
+        // Check if the player score is greater than the high score
+        if (playerScore > parseInt(localStorage.getItem('highScore')) || !localStorage.getItem('highScore')) {
+            localStorage.setItem('highScore', playerScore);
+            this.displayHighScore.setText('High: ' + parseInt(localStorage.getItem('highScore')));
         }
 
         // Clear any existing waves
