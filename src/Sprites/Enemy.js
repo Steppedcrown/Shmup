@@ -105,8 +105,10 @@ class Enemy extends Phaser.GameObjects.Sprite {
         if (this.destroyed) return; // Prevent double destruction
         this.destroyed = true; // Mark as destroyed
 
-        // Update score 
-        let score = this.scene.registry.get('playerScore') + this.points;
+        // Update score
+        let givenPoints = this.points;
+        if (!this.waveActive) givenPoints /= 2; // If the enemy is not active, give half points
+        let score = this.scene.registry.get('playerScore') + givenPoints;
         this.scene.registry.set('playerScore', score);
         this.scene.displayScore.setText('Score: ' + this.scene.registry.get('playerScore'));
 

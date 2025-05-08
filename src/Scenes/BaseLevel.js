@@ -45,7 +45,7 @@ export class BaseLevel extends Phaser.Scene {
         this.playerLaserCooldown = 0.8;
         this.playerDamage = 1;
         this.playerDamageCooldown = 0.5;
-        this.playerMaxHP = 5;
+        this.playerMaxHP = 10;
 
         // Wave variables
         this.totalWaves = 0;
@@ -354,6 +354,7 @@ export class BaseLevel extends Phaser.Scene {
     damagePlayer(damage) {
         if (this.playerDamageCooldownTimer <= 0 && this.playerAlive) {
             this.playerHp -= damage;
+            if (this.playerHp < 0) this.playerHp = 0; // Prevent negative HP
             this.displayHealth.setText('Hp: ' + this.playerHp);
             this.playerDamageCooldownTimer = this.playerDamageCooldown;
             if (this.playerHp <= 0) {
