@@ -49,8 +49,8 @@ export class BaseLevel extends Phaser.Scene {
 
         // Wave variables
         this.totalWaves = 0;
-        this.waveStart = 1;
-        this.groupMoveSpd = 5;
+        this.waveStart = 3;
+        this.groupMoveSpd = 3;
 
         // Basic enemy paths
         const basicPath1 = new Phaser.Curves.Spline([
@@ -156,14 +156,25 @@ export class BaseLevel extends Phaser.Scene {
         this.load.bitmapFont('myFont', 'fonts/myFont.png', 'fonts/myFont.xml');
     }
 
-    init() {
+    initGame() {
+        // Get current level
+        let current = this.registry.get('currentLevel') || 0;
+        this.registry.set('currentLevel', current + 1);
+
+        // Get background music state
+        let bgPlaying = this.registry.get('bgPlaying') || false;
+        this.registry.set('bgPlaying', bgPlaying);
+
+        // Save player score
+        let playerScore = this.registry.get('playerScore') || 0;
+        this.registry.set('playerScore', playerScore);
+
         // Add background
         this.starfield1 = this.add.image(0, 0, "starfield1").setOrigin(0, 0).setScale(1).setDepth(-100);
         this.starfield2 = this.add.image(0, 900, "starfield2").setOrigin(0, 0).setScale(1).setDepth(-100);
 
         // Player variables
         this.playerProjectiles = [];
-        this.playerScore = 0;
         this.playerHp = this.playerMaxHP;
         this.playerLaserCooldownTimer = 0;
         this.playerDamageCooldownTimer = 0;
@@ -203,6 +214,17 @@ export class BaseLevel extends Phaser.Scene {
         this.restartButton.setOrigin(0.5, 0.5);
         this.restartButton.setVisible(false); // Hide the button initially
         this.restartButton.setInteractive(false); // Disable interaction initially
+
+        // Setup keyboard controls
+        this.setupInputs();
+
+        // Setup sounds
+        this.setupSounds();
+
+        // Add text
+        this.setupScoreText();
+        this.setupHealthText();
+        this.showLevelText(); 
     }
 
     setupInputs() {
@@ -223,16 +245,21 @@ export class BaseLevel extends Phaser.Scene {
         this.beamSFX = this.sound.add("basicLaser", { volume: 0.4 });
     }
 
-    startBackgroundMusic() {
-        // Background music
+    backgroundMusic() {
+        // Create background music
         this.bgMusic = this.sound.add("bgMusic");
         this.bgMusic.setLoop(true);
-        if (!this.bgMusic.isPlaying) this.bgMusic.play({ volume: 0.05 });
+
+        // Start/stop the music
+        if (!this.registry.get('bgPlaying')) {
+            this.bgMusic.play({ volume: 0.05 }); 
+            this.registry.set('bgPlaying', true);
+        }
     }
 
     setupScoreText() {
         // Add score text
-        this.displayScore = this.add.bitmapText(850, 850, 'myFont', 'Score: ' + this.playerScore, 32);
+        this.displayScore = this.add.bitmapText(850, 850, 'myFont', 'Score: ' + this.registry.get('playerScore'), 32);
     }
 
     setupHealthText() {
@@ -241,7 +268,6 @@ export class BaseLevel extends Phaser.Scene {
     }
 
     moveBackground() {
-        // Move the background images to create a parallax effect
         let bgSpeed = 5;
         this.starfield1.y += bgSpeed;
         this.starfield2.y += bgSpeed;
@@ -359,7 +385,7 @@ export class BaseLevel extends Phaser.Scene {
 
     updateWave(delta) {
         this.waveTimer -= delta / 1000;
-        if (this.midWave && this.waveTimer <= 0) {
+        if (this.midWave && this.waveTimer <= 0) { // Start new wave
             this.midWave = false;
             this.newWave = true;
         } else if (!this.midWave) {
@@ -398,6 +424,13 @@ export class BaseLevel extends Phaser.Scene {
         this.restartButton.setInteractive(true); // Enable interaction
     }
 
+    resetRegistry() {
+        // Reset the registry values
+        this.registry.set('currentLevel', 0);
+        this.registry.set('playerScore', 0);
+        //this.registry.set('bgPlaying', false);
+    }
+
     restartGame() {
         this.buttonRect.setVisible(false); // Hide the overlay
         
@@ -420,9 +453,28 @@ export class BaseLevel extends Phaser.Scene {
             }
             this.playerProjectiles = [];
         }
-    
+        this.resetRegistry(); // Reset the registry values
         this.scene.stop("level1");
         this.scene.start("level1");
+    }
+
+    showLevelText() {
+        // Display the wave text
+        this.levelText = this.add.bitmapText(this.scale.width / 2, this.scale.height / 2, 'myFont', 'Level ' + this.registry.get('currentLevel'), 32);
+        this.levelText.setOrigin(0.5);
+        this.levelText.setVisible(true); // Show the text
+
+        // Fade out the text after a delay
+        this.time.delayedCall(2000, () => {
+            this.tweens.add({
+                targets: this.levelText,
+                alpha: 0,
+                duration: 1000,
+                onComplete: () => {
+                    this.levelText.destroy(); // Destroy the text after fading out
+                }
+            });
+        });
     }
 }
   

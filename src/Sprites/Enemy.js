@@ -100,8 +100,9 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.destroyed = true; // Mark as destroyed
 
         // Update score 
-        this.scene.playerScore += this.points;
-        this.scene.displayScore.setText('Score: ' + this.scene.playerScore);
+        let score = this.scene.registry.get('playerScore') + this.points;
+        this.scene.registry.set('playerScore', score);
+        this.scene.displayScore.setText('Score: ' + this.scene.registry.get('playerScore'));
 
         // Play the destroy sound effect
         if (this.destroySFX && this.scene.playerAlive) {

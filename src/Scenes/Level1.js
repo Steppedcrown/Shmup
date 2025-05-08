@@ -14,18 +14,8 @@ export class Level1 extends BaseLevel {
 
   create() {
     // Run initialization functions
-    this.init();
-
-    // Setup keyboard controls
-    this.setupInputs();
-
-    // Setup sounds
-    this.setupSounds();
-    this.startBackgroundMusic();
-
-    // Add text
-    this.setupScoreText();
-    this.setupHealthText();
+    this.initGame();
+    this.backgroundMusic();
 
     // Add player ship sprite to the screen
     this.player = new Player(this, this.game.config.width / 2, this.game.config.height - 100, "ships", "shipGreen_manned.png", 
@@ -36,9 +26,6 @@ export class Level1 extends BaseLevel {
     }
 
     this.createEnemy("basic", 100, 50, 0);
-    //this.createEnemy("heavy", 200, 50, 1);
-    //this.createEnemy("beam", 300, 50, 1);
-    //this.createEnemy("basic", "ships", "shipPink_manned.png", 0.75, 1, 100, this.shipExplosionSFX, 1, 250, 200, this.basicLaserSFX, 15, 1, 3, 1);
   }
 
   update(time, delta) {

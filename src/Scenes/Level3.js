@@ -8,17 +8,7 @@ export class Level3 extends BaseLevel {
 
   create() {
     // Run initialization functions
-    this.init();
-
-    // Setup keyboard controls
-    this.setupInputs();
-
-    // Setup sounds
-    this.setupSounds();
-
-    // Add text
-    this.setupScoreText();
-    this.setupHealthText();
+    this.initGame();
 
     // Add player ship sprite to the screen
     this.player = new Player(this, this.game.config.width / 2, this.game.config.height - 100, "ships", "shipGreen_manned.png", 
