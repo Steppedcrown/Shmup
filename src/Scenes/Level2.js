@@ -4,6 +4,7 @@ export class Level2 extends BaseLevel {
   constructor() {
     super("level2"); // Pass scene key to parent class
     this.totalWaves = 1; // Total number of waves in the level
+    this.nextScene = "level3"; // Next scene to load
   }
 
   create() {
@@ -31,7 +32,6 @@ export class Level2 extends BaseLevel {
     this.createEnemy("basic", 100, 50, 0);
     this.createEnemy("basic", 200, 50, 0);
     this.createEnemy("basic", 300, 50, 0);
-    //this.createEnemy("basic", "ships", "shipPink_manned.png", 0.75, 1, 100, this.shipExplosionSFX, 1, 250, 200, this.basicLaserSFX, 15, 1, 3, 1);
   }
 
   update(time, delta) {

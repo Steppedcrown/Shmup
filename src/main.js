@@ -14,6 +14,7 @@
 
 import { Level1 } from "./Scenes/Level1.js";
 import { Level2 } from "./Scenes/Level2.js";
+import { Level3 } from "./Scenes/Level3.js";
 
 // game config
 let config = {
@@ -24,7 +25,7 @@ let config = {
     },
     width: 1000,
     height: 900,
-    scene: [Level1, Level2],
+    scene: [Level1, Level2, Level3],
     fps: { forceSetTimeOut: true, target: 60 }
 }
 

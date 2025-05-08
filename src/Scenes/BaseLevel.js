@@ -221,7 +221,9 @@ export class BaseLevel extends Phaser.Scene {
         this.basicLaserSFX = this.sound.add("basicLaser", { volume: 0.4 });
         this.heavyLaserSFX = this.sound.add("basicLaser", { volume: 0.4 });
         this.beamSFX = this.sound.add("basicLaser", { volume: 0.4 });
+    }
 
+    startBackgroundMusic() {
         // Background music
         this.bgMusic = this.sound.add("bgMusic");
         this.bgMusic.setLoop(true);
