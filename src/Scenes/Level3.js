@@ -3,7 +3,7 @@ import { BaseLevel } from "./BaseLevel.js";
 export class Level3 extends BaseLevel {
   constructor() {
     super("level3"); // Pass scene key to parent class
-    this.totalWaves = 1; // Total number of waves in the level
+    this.totalWaves = 3; // Total number of waves in the level
   }
 
   create() {
@@ -18,9 +18,25 @@ export class Level3 extends BaseLevel {
       this.waves[i] = this.add.group({ runChildUpdate: true }); // Group to hold all enemies
     }
 
-    this.createEnemy("heavy", 100, 50, 0);
-    this.createEnemy("heavy", 200, 50, 0);
-    this.createEnemy("heavy", 300, 50, 0);
+    this.createEnemy("heavy", 250, 100, 0);
+    this.createEnemy("basic", 350, 100, 0);
+    this.createEnemy("heavy", 450, 100, 0);
+    this.createEnemy("heavy", 200, 175, 0);
+    this.createEnemy("heavy", 300, 175, 0);
+    this.createEnemy("heavy", 400, 175, 0);
+
+    this.createEnemy("basic", 600, 50, 1);
+    this.createEnemy("basic", 700, 50, 1);
+    this.createEnemy("basic", 800, 50, 1);
+    this.createEnemy("heavy", 550, 125, 1);
+    this.createEnemy("heavy", 650, 125, 1);
+    this.createEnemy("heavy", 750, 125, 1);
+
+    this.createEnemy("heavy", 400, 250, 2);
+    this.createEnemy("heavy", 500, 250, 2);
+    this.createEnemy("basic", 350, 325, 2);
+    this.createEnemy("basic", 450, 325, 2);
+    this.createEnemy("basic", 550, 325, 2);
   }
 
   update(time, delta) {

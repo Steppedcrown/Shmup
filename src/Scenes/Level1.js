@@ -3,7 +3,7 @@ import { BaseLevel } from "./BaseLevel.js";
 export class Level1 extends BaseLevel {
   constructor() {
     super("level1"); // Pass scene key to parent class
-    this.totalWaves = 1; // Total number of waves in the level
+    this.totalWaves = 2; // Total number of waves in the level
     this.nextScene = "level2"; // Next scene to load
   }
 
@@ -25,7 +25,15 @@ export class Level1 extends BaseLevel {
       this.waves[i] = this.add.group({ runChildUpdate: true }); // Group to hold all enemies
     }
 
-    this.createEnemy("basic", 100, 50, 0);
+    this.createEnemy("basic", 300, 100, 0);
+    this.createEnemy("basic", 400, 100, 0);
+    this.createEnemy("basic", 350, 175, 0);
+    this.createEnemy("basic", 450, 175, 0);
+
+    this.createEnemy("basic", 600, 200, 1);
+    this.createEnemy("basic", 700, 200, 1);
+    this.createEnemy("heavy", 650, 275, 1);
+    this.createEnemy("heavy", 750, 275, 1);
   }
 
   update(time, delta) {
