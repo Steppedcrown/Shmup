@@ -59,9 +59,9 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.setOrigin(0.5, 0.5);
 
         // Shrink the sprite to fix its hitbox
-        let increase = 0.1;
-        this.width *= (enemyScale + increase);
-        this.height *= (enemyScale + increase);
+        let scaler = 0.1;
+        this.width *= (enemyScale - scaler);
+        this.height *= (enemyScale - scaler);
 
         scene.add.existing(this);
     }

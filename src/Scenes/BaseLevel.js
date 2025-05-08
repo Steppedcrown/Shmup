@@ -11,26 +11,26 @@ export class BaseLevel extends Phaser.Scene {
         this.nextScene = null;
 
         // Game feel variables
-        this.playerSpeed = 10;
-        this.playerProjectileSpeed = 20;
+        this.playerSpeed = 12;
+        this.playerProjectileSpeed = 18;
 
         // Basic enemy variables
-        this.basicProjSpd = 15;
+        this.basicProjSpd = 20;
         this.basicLaserCooldown = 0.8;
         this.basicDamage = 1;
         this.basicMaxHP = 1;
         this.basicPoints = 150;
-        this.basicMaxLasers = 3;
-        this.basicSpd = 0.4;
+        this.basicMaxLasers = 5;
+        this.basicSpd = 0.25;
 
         // Heavy enemy variables
-        this.heavyProjSpd = 10;
+        this.heavyProjSpd = 15;
         this.heavyLaserCooldown = 1.25;
         this.heavyDamage = 2;
         this.heavyMaxHP = 4;
         this.heavyPoints = 250;
-        this.heavyMaxLasers = 2;
-        this.heavySpd = 0.25;
+        this.heavyMaxLasers = 3;
+        this.heavySpd = 0.15;
 
         // Beam enemy variables
         this.beamProjSpd = 5;
@@ -53,70 +53,116 @@ export class BaseLevel extends Phaser.Scene {
         this.groupMoveSpd = 3;
 
         // Basic enemy paths
+        // Path 1: Starts top-left, curves right, exits bottom-right
         const basicPath1 = new Phaser.Curves.Spline([
-            new Phaser.Math.Vector2(100, 50),
-            new Phaser.Math.Vector2(200, 150),
-            new Phaser.Math.Vector2(400, 300),
-            new Phaser.Math.Vector2(600, 450),
-            new Phaser.Math.Vector2(1050, 600)
-        ]);
-        const basicPath2 = new Phaser.Curves.Spline([
-            new Phaser.Math.Vector2(750, 50),
-            new Phaser.Math.Vector2(600, 200),
+            new Phaser.Math.Vector2(50, 50),
+            new Phaser.Math.Vector2(200, 200),
             new Phaser.Math.Vector2(500, 400),
+            new Phaser.Math.Vector2(800, 700),
+            new Phaser.Math.Vector2(1050, 850)
+        ]);
+
+        // Path 2: Starts bottom-left, loops upward, exits right
+        const basicPath2 = new Phaser.Curves.Spline([
+            new Phaser.Math.Vector2(100, 850),
             new Phaser.Math.Vector2(300, 600),
-            new Phaser.Math.Vector2(-100, 900)
+            new Phaser.Math.Vector2(400, 300),
+            new Phaser.Math.Vector2(600, 400),
+            new Phaser.Math.Vector2(1050, 500)
         ]);
+
+        // Path 3: Starts top-right, zigzags down, exits bottom
         const basicPath3 = new Phaser.Curves.Spline([
-            new Phaser.Math.Vector2(0, 100),
-            new Phaser.Math.Vector2(150, 250),
-            new Phaser.Math.Vector2(400, 400),
-            new Phaser.Math.Vector2(650, 600),
-            new Phaser.Math.Vector2(1000, 950)
+            new Phaser.Math.Vector2(950, 50),
+            new Phaser.Math.Vector2(700, 200),
+            new Phaser.Math.Vector2(900, 400),
+            new Phaser.Math.Vector2(600, 600),
+            new Phaser.Math.Vector2(500, 950)
         ]);
+
+        // Path 4: Starts middle-left, curves up then down, exits right
         const basicPath4 = new Phaser.Curves.Spline([
-            new Phaser.Math.Vector2(500, 50),
-            new Phaser.Math.Vector2(520, 200),
-            new Phaser.Math.Vector2(540, 400),
-            new Phaser.Math.Vector2(560, 600),
-            new Phaser.Math.Vector2(580, 950)
+            new Phaser.Math.Vector2(0, 450),
+            new Phaser.Math.Vector2(200, 200),
+            new Phaser.Math.Vector2(500, 300),
+            new Phaser.Math.Vector2(800, 600),
+            new Phaser.Math.Vector2(1050, 700)
         ]);
-        this.basicPaths = [basicPath1, basicPath2, basicPath3, basicPath4];
+
+        // Path 5: Starts bottom-right, curves left then up, exits top
+        const basicPath5 = new Phaser.Curves.Spline([
+            new Phaser.Math.Vector2(950, 850),
+            new Phaser.Math.Vector2(700, 700),
+            new Phaser.Math.Vector2(500, 500),
+            new Phaser.Math.Vector2(300, 200),
+            new Phaser.Math.Vector2(200, -80)
+        ]);
+
+        // Path 6: Starts top-center, spirals outward, exits bottom-right
+        const basicPath6 = new Phaser.Curves.Spline([
+            new Phaser.Math.Vector2(500, 50),
+            new Phaser.Math.Vector2(600, 300),
+            new Phaser.Math.Vector2(400, 500),
+            new Phaser.Math.Vector2(700, 700),
+            new Phaser.Math.Vector2(1050, 950)
+        ]);
+        this.basicPaths = [basicPath1, basicPath2, basicPath3, basicPath4, basicPath5, basicPath6];
 
         // Heavy
+        // Path 1: Starts top-left, gentle curve right, exits right
         const heavyPath1 = new Phaser.Curves.Spline([
-            new Phaser.Math.Vector2(100, 0),
-            new Phaser.Math.Vector2(250, 100),
-            new Phaser.Math.Vector2(400, 200),
-            new Phaser.Math.Vector2(600, 300),
-            new Phaser.Math.Vector2(800, 450),
+            new Phaser.Math.Vector2(50, 100),
+            new Phaser.Math.Vector2(250, 150),
+            new Phaser.Math.Vector2(500, 200),
+            new Phaser.Math.Vector2(750, 250),
+            new Phaser.Math.Vector2(1050, 300)
+        ]);
+
+        // Path 2: Starts bottom-left, slight upward curve, exits right
+        const heavyPath2 = new Phaser.Curves.Spline([
+            new Phaser.Math.Vector2(50, 800),
+            new Phaser.Math.Vector2(250, 750),
+            new Phaser.Math.Vector2(500, 700),
+            new Phaser.Math.Vector2(750, 650),
             new Phaser.Math.Vector2(1050, 600)
         ]);
-        const heavyPath2 = new Phaser.Curves.Spline([
-            new Phaser.Math.Vector2(700, 0),
-            new Phaser.Math.Vector2(550, 100),
-            new Phaser.Math.Vector2(400, 200),
-            new Phaser.Math.Vector2(250, 300),
-            new Phaser.Math.Vector2(100, 400),
-            new Phaser.Math.Vector2(-50, 500)
-        ]);
+
+        // Path 3: Starts top-right, shallow downward curve, exits bottom
         const heavyPath3 = new Phaser.Curves.Spline([
-            new Phaser.Math.Vector2(500, 0),
-            new Phaser.Math.Vector2(600, 200),
-            new Phaser.Math.Vector2(700, 400),
-            new Phaser.Math.Vector2(750, 600),
-            new Phaser.Math.Vector2(800, 800),
-            new Phaser.Math.Vector2(850, 1000)
+            new Phaser.Math.Vector2(950, 50),
+            new Phaser.Math.Vector2(850, 250),
+            new Phaser.Math.Vector2(750, 450),
+            new Phaser.Math.Vector2(650, 650),
+            new Phaser.Math.Vector2(600, 950)
         ]);
+
+        // Path 4: Starts middle-left, gentle wave, exits right
         const heavyPath4 = new Phaser.Curves.Spline([
-            new Phaser.Math.Vector2(300, 50),
-            new Phaser.Math.Vector2(450, 200),
-            new Phaser.Math.Vector2(600, 350),
-            new Phaser.Math.Vector2(650, 450),
-            new Phaser.Math.Vector2(600, 550),
-            new Phaser.Math.Vector2(450, 950)
+            new Phaser.Math.Vector2(0, 450),
+            new Phaser.Math.Vector2(200, 400),
+            new Phaser.Math.Vector2(500, 450),
+            new Phaser.Math.Vector2(800, 400),
+            new Phaser.Math.Vector2(1050, 450)
         ]);
-        this.heavyPaths = [heavyPath1, heavyPath2, heavyPath3, heavyPath4];
+
+        // Path 5: Starts bottom-right, slight upward curve, exits top
+        const heavyPath5 = new Phaser.Curves.Spline([
+            new Phaser.Math.Vector2(950, 850),
+            new Phaser.Math.Vector2(850, 650),
+            new Phaser.Math.Vector2(750, 450),
+            new Phaser.Math.Vector2(650, 250),
+            new Phaser.Math.Vector2(600, -50)
+        ]);
+
+        // Path 6: Starts top-center, smooth downward curve, exits bottom
+        const heavyPath6 = new Phaser.Curves.Spline([
+            new Phaser.Math.Vector2(500, 50),
+            new Phaser.Math.Vector2(550, 250),
+            new Phaser.Math.Vector2(500, 450),
+            new Phaser.Math.Vector2(450, 650),
+            new Phaser.Math.Vector2(400, 950)
+        ]);
+        this.heavyPaths = [heavyPath1, heavyPath2, heavyPath3, heavyPath4, heavyPath5, heavyPath6];
 
         // Beam
         const beamPath1 = new Phaser.Curves.Spline([
