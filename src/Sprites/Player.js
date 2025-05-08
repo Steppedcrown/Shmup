@@ -12,9 +12,15 @@ class Player extends Phaser.GameObjects.Sprite {
         this.playerLaserSFX = laserSFX;
 
         // Set the scale of the player ship
-        this.setScale(0.5);
+        let playerScale = 0.5;
+        this.setScale(playerScale);
         this.setDepth(0);
         this.setOrigin(0.5, 0.5);
+
+        // Shrink the sprite to fix its hitbox
+        let reduction = 0.2;
+        this.width *= (playerScale - reduction);
+        this.height *= (playerScale - reduction);
 
         // Create laser group
         this.laserGroup = scene.add.group({

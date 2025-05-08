@@ -146,8 +146,6 @@ export class BaseLevel extends Phaser.Scene {
         this.load.audio("basicLaser", "audio/laserSmall_004.ogg");
         this.load.audio("heavyLaser", "audio/laserLarge_000.ogg");
         this.load.audio("beamLaser", "audio/laserSmall_001.ogg");
-    
-        // Player ship
 
         // Background music
         this.load.audio("bgMusic", "audio/brain-implant-cyberpunk-sci-fi-trailer-action-intro-330416.mp3");

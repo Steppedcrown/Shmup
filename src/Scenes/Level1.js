@@ -26,6 +26,8 @@ export class Level1 extends BaseLevel {
     }
 
     this.createEnemy("basic", 100, 50, 0);
+
+    this.hitboxGraphics = this.add.graphics();
   }
 
   update(time, delta) {
@@ -41,5 +43,16 @@ export class Level1 extends BaseLevel {
 
     // Move background
     this.moveBackground();
+
+    this.hitboxGraphics.clear();
+    this.hitboxGraphics.lineStyle(2, 0xff0000);
+    this.hitboxGraphics.strokeRect(
+        this.player.x - this.player.width / 2,
+        this.player.y - this.player.height / 2,
+        this.player.width,
+        this.player.height
+    );
+
+
   }
 }
